@@ -178,3 +178,4 @@ gyro_steer_l(-55, -50, 0)
 #gyro_steer_l(-45, -40, 0)
 #mot.move_tank(5, "cm", -30, -30)
 #mot.move_tank(90, "cm", -50, -50)
+#nova

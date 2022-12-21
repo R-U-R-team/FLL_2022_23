@@ -169,3 +169,4 @@ mot.move_tank(5, "cm", -20, -20)
 gyro_steer_l(-80, -50, 50)
 move_sec(100, 100, 1.5)
 #stojí
+#nova
