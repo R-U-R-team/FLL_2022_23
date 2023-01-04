@@ -24,7 +24,7 @@ resgyr = hub.motion_sensor.reset_yaw_angle()
 resmot = motr.set_degrees_counted(0)
 mot.set_default_speed(30)
 
-mot.set_motor_rotation(17.6, "cm") 
+mot.set_motor_rotation(17.6, "cm")
 hub.motion_sensor.reset_yaw_angle()
 
 def move_sec(rychlostl, rychlostr, sekundy):
@@ -124,49 +124,15 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-hub.motion_sensor.reset_yaw_angle()
+mot.start_tank(50, 50)
+cr.wait_until_color("black")
+mot.move_tank(1, "cm", -20, -20)
+mot.stop()
+vzv.run_for_degrees(400, 100)
+mot.move_tank(4, "cm", 20, 20)
+vzv.run_for_degrees(-390, 100)
+mot.move_tank(6, "cm", -30, -30)
 
-#jede televize
-move_gyro(700, 0, 50)
-wait_for_seconds(0.3)
-mot.move_tank(10, "cm", -20, -20)
-gyro_steer_l(-35, -35, 35)
 
-#jede vrtule
-wait_for_seconds(0.3)
-move_gyro(1050, 0, 50)
-gyro_steer_r(82, 0, -50)
-mot.move_tank(3, "cm")
-mot.move_tank(10, "cm", 50, 50)
-#jizda_po_care(220, 30, "r", "r")
-move_sec(60, 60, 0.6)
-wait_for_seconds(0.3)
-mot.move_tank(5, "cm", -20, -20)
-wait_for_seconds(0.3)
-move_sec(50, 50, 0.5)
-wait_for_seconds(0.3)
-mot.move_tank(5, "cm", -20, -20)
-wait_for_seconds(0.3)
-move_sec(50, 50, 0.5)
-wait_for_seconds(0.3)
 
-#jede trychtýř
-mot.move_tank(15, "cm", -20, -20)
-rad.run_for_seconds(0.8, 80)
-rad.run_for_seconds(1, 100)
-vzv.run_for_degrees(100, 100)
-gyro_steer_l(-90, -50, 50)
-mot.move_tank(5, "cm", 20, 20)
-gyro_steer_l(-77, -50, 50)
-mot.move_tank(1.5, "cm", 40, 40)
-vzv.run_for_degrees(90, -100)
-mot.move_tank(5.3, "cm", 40, 40)
-rad.run_for_seconds(0.5, -30)
-rad.run_for_seconds(0.5, 50)
 
-#jede baze
-mot.move_tank(5, "cm", -20, -20)
-gyro_steer_l(-80, -50, 50)
-move_sec(100, 100, 1.5)
-#stojí
-#nova

@@ -132,11 +132,11 @@ mot.move_tank(10, "cm", 50, 50)
 jizda_po_care(1150, 35, "l", "l", 0.23)
 wait_for_seconds(0.3)
 mot.move_tank(5, "cm", -30, -30)
-vzv.run_for_degrees(300, 100)
-vzv.run_for_degrees(-290, 100)
+vzv.run_for_degrees(330, 100)
+vzv.run_for_degrees(-320, 100)
 for i in range(2):
-    vzv.run_for_degrees(300, 100)
-    vzv.run_for_degrees(-300, 100)
+    vzv.run_for_degrees(320, 100)
+    vzv.run_for_degrees(-320, 100)
 
 #jede RUR
 
@@ -154,13 +154,15 @@ gyro_steer_r(45, 30, -20)
 wait_for_seconds(0.3)
 mot.move_tank(10, "cm", -30, -30)
 gyro_steer_r(45, 30, -30)
-mot.move_tank(8, "cm", 30, 30)
+mot.move_tank(12, "cm", 30, 30)
 gyro_steer_l(-45, -30, 30)
 jizda_po_care(600, 50, "r", "r", 0.36)
 rad.run_for_degrees(180, -100)
-mot.move_tank(20, "cm", -30, -30)
-gyro_steer_l(-55, -50, 0)
-
+mot.move_tank(18, "cm", -30, -30)
+gyro_steer_l(-35, -50, 0)
+mot.move_tank(50, "cm", -30, -30)
+#gyro_steer_r(15, 30, -30)
+#mot.move_tank(20, "cm", -30, -30)
 
 
 #mot.move_tank(15, "cm",30, 30)
@@ -178,4 +180,3 @@ gyro_steer_l(-55, -50, 0)
 #gyro_steer_l(-45, -40, 0)
 #mot.move_tank(5, "cm", -30, -30)
 #mot.move_tank(90, "cm", -50, -50)
-#nova
