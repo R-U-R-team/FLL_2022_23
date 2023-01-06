@@ -1,7 +1,9 @@
+# LEGO type:standard slot:2 autostart
+
 from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
-from math import *
-from math import pi
+from spike.operator import less_than
+import math
 
 hub = PrimeHub()
 sekundy = 0
@@ -65,13 +67,13 @@ def zarovnani_l(rychlost_leva, rychlost_prava):
         mot.start_tank_at_power(0, rychlost_prava)
     mot.stop()
     while cl.get_reflected_light()<cerna_zarovnani:
-        mot.start_tank_at_power(-15, 0)
+        mot.start_tank_at_power(-25, 0)
     mot.stop()
     while cl.get_reflected_light()<stred:
-        mot.start_tank_at_power(-10, 0)
+        mot.start_tank_at_power(-25, 0)
     mot.stop()
     while cr.get_reflected_light()<stred:
-        mot.start_tank_at_power(0, -15)
+        mot.start_tank_at_power(0, -25)
     mot.stop()
 
 def zarovnani_r(rychlost_leva, rychlost_prava):
@@ -82,13 +84,13 @@ def zarovnani_r(rychlost_leva, rychlost_prava):
         mot.start_tank_at_power(rychlost_leva, 0)
     mot.stop()
     while cr.get_reflected_light()<cerna_zarovnani:
-        mot.start_tank_at_power(0, -15)
+        mot.start_tank_at_power(0, -25)
     mot.stop()
     while cr.get_reflected_light()<stred:
-        mot.start_tank_at_power(0, -10)
+        mot.start_tank_at_power(0, -25)
     mot.stop()
     while cl.get_reflected_light()<stred:
-        mot.start_tank_at_power(-15, 0)
+        mot.start_tank_at_power(-25, 0)
     mot.stop()
 
 def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
@@ -124,15 +126,39 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-mot.start_tank(50, 50)
+#mot.move_tank(50, "cm", 30, 30)
+
+#tady se to může posrat
+mot.start_tank(99, 95)
+#tady se to může posrat
+
+wait_until(cl.get_reflected_light, less_than, cerna_zarovnani)
+mot.stop()
+wait_for_seconds(0.3)
+mot.move_tank(6, "cm", -20, -20)
+wait_for_seconds(0.3)
+zarovnani_l(25, 25)
+wait_for_seconds(0.3)
+move_gyro(200, 0, 30)
+#mot.move_tank(9, "cm", 30, 30)
+wait_for_seconds(0.3)
+gyro_steer_l(-90, -30, 30)
+#jede na mojitovač
+mot.start_tank(30, 30)
 cr.wait_until_color("black")
 mot.move_tank(1, "cm", -20, -20)
 mot.stop()
-vzv.run_for_degrees(400, 100)
+vzv.run_for_degrees(380, 100)
 mot.move_tank(4, "cm", 20, 20)
-vzv.run_for_degrees(-390, 100)
-mot.move_tank(6, "cm", -30, -30)
-
-
-
+rad.run_for_seconds(0.5, -25)
+vzv.run_for_degrees(-380, 100)
+rad.run_for_degrees(100, 20)
+mot.move_tank(12, "cm", -30, -30)
+#jede k vodníkovi
+gyro_steer_r(90, 30, -30)
+mot.move_tank(15, "cm", -30,  -30)
+zarovnani_l(25, 25)
+move_gyro(550, 0, 40)
+vzv.run_for_degrees(350, 100)
+vzv.run_for_degrees(350, -100)
 
