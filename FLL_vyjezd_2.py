@@ -126,7 +126,6 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-#mot.move_tank(50, "cm", 30, 30)
 
 #tady se to může posrat
 mot.start_tank(99, 95)
@@ -143,6 +142,7 @@ move_gyro(200, 0, 30)
 #mot.move_tank(9, "cm", 30, 30)
 wait_for_seconds(0.3)
 gyro_steer_l(-90, -30, 30)
+
 #jede na mojitovač
 mot.start_tank(30, 30)
 cr.wait_until_color("black")
@@ -150,15 +150,22 @@ mot.move_tank(1, "cm", -20, -20)
 mot.stop()
 vzv.run_for_degrees(380, 100)
 mot.move_tank(4, "cm", 20, 20)
-rad.run_for_seconds(0.5, -25)
+rad.run_for_seconds(0.6, -25)
 vzv.run_for_degrees(-380, 100)
-rad.run_for_degrees(100, 20)
-mot.move_tank(12, "cm", -30, -30)
+#rad.run_for_degrees(100, 20)
+mot.move_tank(7, "cm", -30, -30)
+
 #jede k vodníkovi
 gyro_steer_r(90, 30, -30)
 mot.move_tank(15, "cm", -30,  -30)
 zarovnani_l(25, 25)
-move_gyro(550, 0, 40)
-vzv.run_for_degrees(350, 100)
-vzv.run_for_degrees(350, -100)
-
+move_gyro(850, -1, 45)
+vzv.run_for_degrees(100, 100)
+move_gyro(-200, -1, 40)
+gyro_steer_r(20, 40, 0)
+#vzv.run_for_degrees(350, 100)
+#vzv.run_for_degrees(350, -100)
+#gyro_steer_l(-30, -50, 0)
+#move_gyro(200, 0, 50)
+#gyro_steer_r(30, 50, -50)
+#move_gyro(800, 0, 50)
