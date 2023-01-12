@@ -1,4 +1,4 @@
-# LEGO type:standard slot:6 autostart
+# LEGO type:standard slot:7 autostart
 
 from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
@@ -128,4 +128,13 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
 
 hub.motion_sensor.reset_yaw_angle()
 
-mot.move_tank(50, "cm", -100, -100)
+class MotorPair_RUR(MotorPair):
+
+    def move_sec(self, rychlostl, rychlostr, sekundy):
+        self.start_tank(rychlostl, rychlostr)
+        wait_for_seconds(sekundy)
+        self.stop()
+
+motory = MotorPair_RUR("A", "B")
+
+motory.move_sec(50, 50, 4)
