@@ -1,4 +1,4 @@
-# LEGO type:standard slot:1 autostart
+# LEGO type:standard slot:6 autostart
 
 from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
@@ -128,46 +128,4 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
 
 hub.motion_sensor.reset_yaw_angle()
 
-#jede televize
-move_gyro(700, 0, 60)
-wait_for_seconds(0.3)
-mot.move_tank(10, "cm", -40, -40)
-gyro_steer_l(-35, -35, 35)
-
-#jede vrtule
-wait_for_seconds(0.3)
-move_gyro(1050, 0, 60)
-gyro_steer_r(82, 0, -70)
-mot.move_tank(3, "cm", 50, 50)
-mot.move_tank(10, "cm", 50, 50)
-move_sec(50, 50, 0.6)
-wait_for_seconds(0.3)
-mot.move_tank(5, "cm", -50, -50)
-wait_for_seconds(0.3)
-move_sec(50, 50, 0.5)
-wait_for_seconds(0.3)
-mot.move_tank(5, "cm", -50, -50)
-wait_for_seconds(0.3)
-move_sec(50, 50, 0.5)
-wait_for_seconds(0.3)
-
-#jede trychtýř
-mot.move_tank(15, "cm", -40, -40)
-rad.run_for_seconds(0.8, 100)
-rad.run_for_seconds(1, 100)
-vzv.run_for_degrees(100, 100)
-gyro_steer_l(-90, -35, 35)
-mot.move_tank(6.5, "cm", 40, 40)
-gyro_steer_l(-82, -35, 35)
-mot.move_tank(1, "cm", 50, 50)
-vzv.run_for_degrees(90, -100)
-mot.move_tank(7, "cm", 40, 40)
-rad.run_for_seconds(0.5, -50)
-rad.run_for_seconds(0.5, 50)
-
-#jede baze
-mot.move_tank(5, "cm", -50, -50)
-gyro_steer_l(-80, -90, 90)
-move_sec(100, 100, 1.5)
-#stojí
-#nova
+mot.move_tank(50, "cm", -100, -100)
