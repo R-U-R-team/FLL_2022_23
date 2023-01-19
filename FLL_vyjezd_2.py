@@ -37,7 +37,7 @@ def move_sec(rychlostl, rychlostr, sekundy):
 def move_gyro(dalka, smer, rychl, mensivetsi = "mensi"):
     motr.set_degrees_counted(0)
     hub.motion_sensor.reset_yaw_angle()
-    
+
     if (mensivetsi == "mensi"):
         while motr.get_degrees_counted() < dalka:
             Prop = 0.6
@@ -47,7 +47,7 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi"):
             mot.start_tank_at_power(speedl, speedr)
             print(errorsteer)
         mot.stop()
-    
+
     elif(mensivetsi == "vetsi"):
         while motr.get_degrees_counted() > dalka:
             Prop = 0.6
@@ -61,13 +61,13 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi"):
 
 def gyro_steer_r(pozitivni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
-    while hub.motion_sensor.get_yaw_angle()<pozitivni_zatacka:
+    while hub.motion_sensor.get_yaw_angle()<=pozitivni_zatacka:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu
 def gyro_steer_l(negativni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
-    while hub.motion_sensor.get_yaw_angle()>negativni_zatacka:
+    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 
@@ -143,6 +143,7 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
 mot.start_tank(99, 95)
 #tady se to může posrat
 
+#jede na čáru
 wait_until(cl.get_reflected_light, less_than, cerna_zarovnani)
 mot.stop()
 wait_for_seconds(0.3)
@@ -151,11 +152,10 @@ wait_for_seconds(0.3)
 zarovnani_l(25, 25)
 wait_for_seconds(0.3)
 move_gyro(200, 0, 30)
-#mot.move_tank(9, "cm", 30, 30)
 wait_for_seconds(0.3)
-gyro_steer_l(-89, -30, 30)
+gyro_steer_l(-93, -30, 30)
 
-#jede na mojitovač
+##jede na mojitovač
 mot.start_tank(30, 30)
 cr.wait_until_color("black")
 mot.move_tank(1, "cm", -20, -20)
@@ -169,16 +169,17 @@ mot.move_tank(7, "cm", -30, -30)
 
 #jede k vodníkovi
 gyro_steer_r(90, 30, -30)
-mot.move_tank(15, "cm", -30,  -30)
+mot.move_tank(15, "cm", -30,-30)
 zarovnani_l(25, 25)
-move_gyro(850, -1, 45)
+move_gyro(850, -3, 45)
 vzv.run_for_degrees(100, 100)
 move_gyro(-180, -1, -40, "vetsi")
 gyro_steer_r(25, 40, -40)
 vzv.run_for_degrees(250, 100)
 vzv.run_for_degrees(100, -100)
 mot.move_tank(5, "cm", -30, -30)
+
+#jede do baze
 gyro_steer_l(-25, -50, 0)
 move_gyro(1600, 0, 100)
-#gyro_steer_r(30, 50, -50)
-#move_gyro(800, 0, 50)
+

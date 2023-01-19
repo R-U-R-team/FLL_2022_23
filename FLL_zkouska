@@ -126,15 +126,6 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-hub.motion_sensor.reset_yaw_angle()
-
-class MotorPair_RUR(MotorPair):
-
-    def move_sec(self, rychlostl, rychlostr, sekundy):
-        self.start_tank(rychlostl, rychlostr)
-        wait_for_seconds(sekundy)
-        self.stop()
-
-motory = MotorPair_RUR("A", "B")
-
-motory.move_sec(50, 50, 4)
+gyro_steer_r(35, 30, -30)
+mot.move_tank(5, "cm", 30, 30)
+gyro_steer_l(-35, 0, 30)

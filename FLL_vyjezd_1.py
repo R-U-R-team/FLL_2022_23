@@ -153,16 +153,16 @@ wait_for_seconds(0.3)
 
 #jede trychtýř
 mot.move_tank(15, "cm", -40, -40)
-rad.run_for_seconds(0.8, 100)
-rad.run_for_seconds(1, 100)
 vzv.run_for_degrees(100, 100)
+rad.run_for_seconds(1.8, 80)
 gyro_steer_l(-90, -35, 35)
 mot.move_tank(6.5, "cm", 40, 40)
 gyro_steer_l(-82, -35, 35)
 mot.move_tank(1, "cm", 50, 50)
 vzv.run_for_degrees(90, -100)
 mot.move_tank(7, "cm", 40, 40)
-rad.run_for_seconds(0.5, -50)
+rad.run_for_seconds(0.5, -30)
+wait_for_seconds(0.5)
 rad.run_for_seconds(0.5, 50)
 
 #jede baze
