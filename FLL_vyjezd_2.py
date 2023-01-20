@@ -144,7 +144,7 @@ mot.start_tank(99, 95)
 #tady se to může posrat
 
 #jede na čáru
-wait_until(cl.get_reflected_light, less_than, cerna_zarovnani)
+wait_until(cr.get_reflected_light, less_than, cerna_zarovnani)
 mot.stop()
 wait_for_seconds(0.3)
 mot.move_tank(6, "cm", -20, -20)
@@ -162,16 +162,16 @@ mot.move_tank(1, "cm", -20, -20)
 mot.stop()
 vzv.run_for_degrees(360, 100)
 mot.move_tank(4, "cm", 20, 20)
-rad.run_for_seconds(0.6, -25)
+rad.run_for_seconds(0.75, 100)
 vzv.run_for_degrees(-360, 100)
-rad.run_for_degrees(100, 20)
+rad.run_for_degrees(500, -100)
 mot.move_tank(7, "cm", -30, -30)
 
 #jede k vodníkovi
 gyro_steer_r(90, 30, -30)
 mot.move_tank(15, "cm", -30,-30)
 zarovnani_l(25, 25)
-move_gyro(850, -3, 45)
+move_gyro(850, -1, 45)
 vzv.run_for_degrees(100, 100)
 move_gyro(-180, -1, -40, "vetsi")
 gyro_steer_r(25, 40, -40)
