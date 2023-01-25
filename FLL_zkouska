@@ -5,6 +5,32 @@ from spike.control import wait_for_seconds, wait_until, Timer
 from math import *
 from math import pi
 
+
+class Motor_RUR(Motor):
+    def rampup(self, degrees, rychlost_start = 5, rychlost_konec = 50, krok = 1):
+        rychlost = rychlost_start
+        while self.get_degrees_counted() < degrees:
+            self.start(rychlost)
+            if rychlost < rychlost_konec:
+                rychlost += krok
+        self.stop()
+
+    def rampup_sec(self, poc_rych, kon_rych, za_jak_dlouho):
+        rychlosti = kon_rych - poc_rych
+        za_jak_dlouho = za_jak_dlouho / rychlosti
+        abs_za_jak_dlouho = abs(za_jak_dlouho)
+        posun = za_jak_dlouho / abs_za_jak_dlouho
+        jeste_poc = 0
+        jeste_kon = 1
+        while(jeste_poc < jeste_kon):
+            self.start(poc_rych)
+            wait_for_seconds(abs_za_jak_dlouho)
+            poc_rych = int(poc_rych + posun)
+            jeste_poc = poc_rych * posun
+            jeste_kon = kon_rych * posun
+        self.stop()
+
+
 hub = PrimeHub()
 sekundy = 0
 rychlost = 0
@@ -19,7 +45,7 @@ cr = ColorSensor("F")
 mot = MotorPair("A", "B")
 motr = Motor("B")
 motl = Motor("A")
-vzv = Motor("D")
+vzv = Motor_RUR("D")
 rad = Motor("C")
 yaw = hub.motion_sensor.get_yaw_angle()
 resgyr = hub.motion_sensor.reset_yaw_angle()
@@ -126,6 +152,5 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-gyro_steer_r(35, 30, -30)
-mot.move_tank(5, "cm", 30, 30)
-gyro_steer_l(-35, 0, 30)
+vzv.rampup_sec(1, 100, 2)
+vzv.run_for_seconds(1, 100)
