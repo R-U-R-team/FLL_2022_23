@@ -8,7 +8,7 @@ import math
 hub = PrimeHub()
 sekundy = 0
 rychlost = 0
-cerna = 37
+cerna = 25
 bila = 99
 cerna_zarovnani = cerna + 5
 stred = (cerna + bila) // 2
@@ -72,36 +72,36 @@ def gyro_steer_l(negativni_zatacka, levy, pravy):
     mot.stop()
 
 def zarovnani_l(rychlost_leva, rychlost_prava):
-    while cl.get_reflected_light()>cerna_zarovnani:
+    while cl.get_reflected_light()>=cerna_zarovnani:
         mot.start_tank_at_power(rychlost_leva, rychlost_prava)
     mot.stop()
-    while cr.get_reflected_light()>stred:
+    while cr.get_reflected_light()>=stred:
         mot.start_tank_at_power(0, rychlost_prava)
     mot.stop()
-    while cl.get_reflected_light()<cerna_zarovnani:
+    while cl.get_reflected_light()<=cerna_zarovnani:
         mot.start_tank_at_power(-25, 0)
     mot.stop()
-    while cl.get_reflected_light()<stred:
+    while cl.get_reflected_light()<=stred:
         mot.start_tank_at_power(-25, 0)
     mot.stop()
-    while cr.get_reflected_light()<stred:
+    while cr.get_reflected_light()<=stred:
         mot.start_tank_at_power(0, -25)
     mot.stop()
 
 def zarovnani_r(rychlost_leva, rychlost_prava):
-    while cr.get_reflected_light()>cerna_zarovnani:
+    while cr.get_reflected_light()>=cerna_zarovnani:
         mot.start_tank_at_power(rychlost_leva, rychlost_prava)
     mot.stop()
-    while cl.get_reflected_light()>stred:
+    while cl.get_reflected_light()>=stred:
         mot.start_tank_at_power(rychlost_leva, 0)
     mot.stop()
-    while cr.get_reflected_light()<cerna_zarovnani:
+    while cr.get_reflected_light()<=cerna_zarovnani:
         mot.start_tank_at_power(0, -25)
     mot.stop()
-    while cr.get_reflected_light()<stred:
+    while cr.get_reflected_light()<=stred:
         mot.start_tank_at_power(0, -25)
     mot.stop()
-    while cl.get_reflected_light()<stred:
+    while cl.get_reflected_light()<=stred:
         mot.start_tank_at_power(-25, 0)
     mot.stop()
 
@@ -138,6 +138,7 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
+hub.motion_sensor.reset_yaw_angle()
 
 #tady se to může posrat
 mot.start_tank(99, 95)
@@ -158,28 +159,30 @@ gyro_steer_l(-93, -30, 30)
 ##jede na mojitovač
 mot.start_tank(30, 30)
 cr.wait_until_color("black")
-mot.move_tank(1, "cm", -20, -20)
 mot.stop()
+mot.move_tank(2, "cm", -20, -20)
 vzv.run_for_degrees(360, 100)
-mot.move_tank(4, "cm", 20, 20)
+mot.move_tank(5, "cm", 20, 20)
 rad.run_for_seconds(0.75, 100)
 vzv.run_for_degrees(-360, 100)
+wait_for_seconds(0.5)
+mot.move_tank(20, "degrees", -30, -30)
 rad.run_for_degrees(500, -100)
-mot.move_tank(7, "cm", -30, -30)
+mot.move_tank(5, "cm", -30, -30)
 
 #jede k vodníkovi
 gyro_steer_r(90, 30, -30)
 mot.move_tank(15, "cm", -30,-30)
 zarovnani_l(25, 25)
-move_gyro(850, -1, 45)
+move_gyro(870, -1, 45)
 vzv.run_for_degrees(100, 100)
-move_gyro(-180, -1, -40, "vetsi")
-gyro_steer_r(25, 40, -40)
+move_gyro(-200, -1, -40, "vetsi")
+gyro_steer_r(20, 40, -40)
 vzv.run_for_degrees(250, 100)
 vzv.run_for_degrees(100, -100)
 mot.move_tank(5, "cm", -30, -30)
 
-#jede do baze
+##jede do baze
 gyro_steer_l(-25, -50, 0)
 move_gyro(1600, 0, 100)
 

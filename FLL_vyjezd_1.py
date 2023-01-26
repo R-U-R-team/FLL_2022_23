@@ -153,23 +153,23 @@ wait_for_seconds(0.3)
 
 #jede trychtýř
 mot.move_tank(15, "cm", -40, -40)
-rad.run_for_seconds(0.5, 100)
-rad.run_for_seconds(0.5, 80)
-rad.run_for_seconds(0.5, 60)
+rad.run_for_seconds(1, -100)
+#rad.run_for_seconds(0.5, 80)
+#rad.run_for_seconds(0.5, 60)
 vzv.run_for_degrees(100, 100)
 gyro_steer_l(-90, -35, 35)
-mot.move_tank(6, "cm", 40, 40)
-gyro_steer_l(-82, -35, 35)
+mot.move_tank(5, "cm", 40, 40)
+gyro_steer_l(-86, -35, 35)
 mot.move_tank(1, "cm", 50, 50)
 vzv.run_for_degrees(90, -100)
 mot.move_tank(7, "cm", 40, 40)
-rad.run_for_seconds(0.5, -10)
-wait_for_seconds(0.5)
 rad.run_for_seconds(0.5, 50)
+wait_for_seconds(0.5)
+rad.run_for_seconds(0.5, -50)
 
 #jede baze
 mot.move_tank(5, "cm", -50, -50)
-gyro_steer_l(-80, -90, 90)
-move_sec(100, 100, 1.5)
+gyro_steer_l(-75, -90, 90)
+move_sec(100, 100, 1.75)
 #stojí
 #nova
