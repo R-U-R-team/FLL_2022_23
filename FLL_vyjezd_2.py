@@ -151,22 +151,33 @@ wait_for_seconds(0.3)
 mot.move_tank(6, "cm", -20, -20)
 wait_for_seconds(0.3)
 zarovnani_l(25, 25)
+zarovnani_l(25, 25)
 wait_for_seconds(0.3)
 move_gyro(200, 0, 30)
 wait_for_seconds(0.3)
-gyro_steer_l(-93, -30, 30)
+gyro_steer_l(-86, -30, 30)
+wait_for_seconds(0.3)
+#if(cr.get_reflected_light()<60):
+#    vzv.run_for_degrees(200, 100)
+#else:
+#    move_gyro(20, 3, 30)
+
+#move_gyro(50, 1, 30)
+#vzv.run_for_degrees(150, 100)
+
 
 ##jede na mojitovač
 mot.start_tank(30, 30)
 cr.wait_until_color("black")
 mot.stop()
-mot.move_tank(2, "cm", -20, -20)
+#mot.move_tank(2, "cm", -20, -20)
 vzv.run_for_degrees(360, 100)
-mot.move_tank(5, "cm", 20, 20)
+mot.move_tank(3, "cm", 20, 20)
 rad.run_for_seconds(0.75, 100)
 vzv.run_for_degrees(-360, 100)
 wait_for_seconds(0.5)
-mot.move_tank(20, "degrees", -30, -30)
+mot.move_tank(20, "degrees", 30, 30)
+mot.move_tank(20, "degrees", -30, 0)
 rad.run_for_degrees(500, -100)
 mot.move_tank(5, "cm", -30, -30)
 
@@ -175,14 +186,13 @@ gyro_steer_r(90, 30, -30)
 mot.move_tank(15, "cm", -30,-30)
 zarovnani_l(25, 25)
 move_gyro(870, -1, 45)
-vzv.run_for_degrees(100, 100)
+vzv.run_for_degrees(150, 100)
 move_gyro(-200, -1, -40, "vetsi")
 gyro_steer_r(20, 40, -40)
-vzv.run_for_degrees(250, 100)
+vzv.run_for_seconds(0.75, 50)
 vzv.run_for_degrees(100, -100)
-mot.move_tank(5, "cm", -30, -30)
+#mot.move_tank(5, "cm", -30, -30)
 
-##jede do baze
+#jede do baze
 gyro_steer_l(-25, -50, 0)
 move_gyro(1600, 0, 100)
-

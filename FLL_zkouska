@@ -4,6 +4,7 @@ from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, Motio
 from spike.control import wait_for_seconds, wait_until, Timer
 from math import *
 from math import pi
+import uasyncio
 
 
 class Motor_RUR(Motor):
@@ -46,7 +47,7 @@ mot = MotorPair("A", "B")
 motr = Motor("B")
 motl = Motor("A")
 vzv = Motor_RUR("D")
-rad = Motor("C")
+rad = Motor_RUR("C")
 yaw = hub.motion_sensor.get_yaw_angle()
 resgyr = hub.motion_sensor.reset_yaw_angle()
 resmot = motr.set_degrees_counted(0)
@@ -152,7 +153,9 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-rad.run_for_seconds(1, -50)
-rad.run_for_seconds(0.5, 100)
+async def test():
+    vzv.run_for_degrees(300,100)
 
-
+uasyncio.create_task()
+uasyncio.run(test())
+move_gyro(720,0,30)
