@@ -153,9 +153,8 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-async def test():
-    vzv.run_for_degrees(300,100)
+vzv.run_for_degrees(340, -100)
+move_gyro(200, 0, 50)
+rad.run_for_seconds(1, -100)
 
-uasyncio.create_task()
-uasyncio.run(test())
-move_gyro(720,0,30)
+
