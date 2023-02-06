@@ -60,37 +60,37 @@ def gyro_steer_l(negativni_zatacka, levy, pravy):
     mot.stop()
 
 def zarovnani_l(rychlost_leva, rychlost_prava):
-    while cl.get_reflected_light()>cerna_zarovnani:
+    while cl.get_reflected_light()>=cerna_zarovnani:
         mot.start_tank_at_power(rychlost_leva, rychlost_prava)
     mot.stop()
-    while cr.get_reflected_light()>stred:
+    while cr.get_reflected_light()>=stred:
         mot.start_tank_at_power(0, rychlost_prava)
     mot.stop()
-    while cl.get_reflected_light()<cerna_zarovnani:
-        mot.start_tank_at_power(-15, 0)
+    while cl.get_reflected_light()<=cerna_zarovnani:
+        mot.start_tank_at_power(-25, 0)
     mot.stop()
-    while cl.get_reflected_light()<stred:
-        mot.start_tank_at_power(-10, 0)
+    while cl.get_reflected_light()<=stred:
+        mot.start_tank_at_power(-25, 0)
     mot.stop()
-    while cr.get_reflected_light()<stred:
-        mot.start_tank_at_power(0, -15)
+    while cr.get_reflected_light()<=stred:
+        mot.start_tank_at_power(0, -25)
     mot.stop()
 
 def zarovnani_r(rychlost_leva, rychlost_prava):
-    while cr.get_reflected_light()>cerna_zarovnani:
+    while cr.get_reflected_light()>=cerna_zarovnani:
         mot.start_tank_at_power(rychlost_leva, rychlost_prava)
     mot.stop()
-    while cl.get_reflected_light()>stred:
+    while cl.get_reflected_light()>=stred:
         mot.start_tank_at_power(rychlost_leva, 0)
     mot.stop()
-    while cr.get_reflected_light()<cerna_zarovnani:
-        mot.start_tank_at_power(0, -15)
+    while cr.get_reflected_light()<=cerna_zarovnani:
+        mot.start_tank_at_power(0, -25)
     mot.stop()
-    while cr.get_reflected_light()<stred:
-        mot.start_tank_at_power(0, -10)
+    while cr.get_reflected_light()<=stred:
+        mot.start_tank_at_power(0, -25)
     mot.stop()
-    while cl.get_reflected_light()<stred:
-        mot.start_tank_at_power(-15, 0)
+    while cl.get_reflected_light()<=stred:
+        mot.start_tank_at_power(-25, 0)
     mot.stop()
 
 def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
