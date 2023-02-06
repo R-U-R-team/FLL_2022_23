@@ -153,7 +153,7 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-rad.run_for_seconds(1, -25)
+rad.run_for_seconds(0.8, -50)
 wait_for_seconds(1)
 rad.run_for_seconds(0.5, 100)
 
