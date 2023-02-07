@@ -2,13 +2,13 @@
 
 from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
-from math import *
-from math import pi
+from spike.operator import less_than
+import math
 
 hub = PrimeHub()
 sekundy = 0
 rychlost = 0
-cerna = 37
+cerna = 25
 bila = 99
 cerna_zarovnani = cerna + 5
 stred = (cerna + bila) // 2
@@ -26,7 +26,7 @@ resgyr = hub.motion_sensor.reset_yaw_angle()
 resmot = motr.set_degrees_counted(0)
 mot.set_default_speed(30)
 
-mot.set_motor_rotation(17.6, "cm") 
+mot.set_motor_rotation(17.6, "cm")
 hub.motion_sensor.reset_yaw_angle()
 
 def move_sec(rychlostl, rychlostr, sekundy):
@@ -34,28 +34,40 @@ def move_sec(rychlostl, rychlostr, sekundy):
     wait_for_seconds(sekundy)
     mot.stop()
 
-def move_gyro(dalka, smer, rychl):
+def move_gyro(dalka, smer, rychl, mensivetsi = "mensi"):
     motr.set_degrees_counted(0)
     hub.motion_sensor.reset_yaw_angle()
 
-    while motr.get_degrees_counted() < dalka:
-        Prop = 0.6
-        errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
-        speedl = int(rychl + errorsteer)
-        speedr = int(rychl - errorsteer)
-        mot.start_tank_at_power(speedl, speedr)
-        print(errorsteer)
-    mot.stop()
+    if (mensivetsi == "mensi"):
+        while motr.get_degrees_counted() < dalka:
+            Prop = 0.6
+            errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+            speedl = int(rychl + errorsteer)
+            speedr = int(rychl - errorsteer)
+            mot.start_tank_at_power(speedl, speedr)
+            print(errorsteer)
+        mot.stop()
+
+    elif(mensivetsi == "vetsi"):
+        while motr.get_degrees_counted() > dalka:
+            Prop = 0.6
+            errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+            speedl = int(rychl + errorsteer)
+            speedr = int(rychl - errorsteer)
+            mot.start_tank_at_power(speedl, speedr)
+            print(errorsteer)
+        mot.stop()
+
 
 def gyro_steer_r(pozitivni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
-    while hub.motion_sensor.get_yaw_angle()<pozitivni_zatacka:
+    while hub.motion_sensor.get_yaw_angle()<=pozitivni_zatacka:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu
 def gyro_steer_l(negativni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
-    while hub.motion_sensor.get_yaw_angle()>negativni_zatacka:
+    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 
@@ -154,8 +166,6 @@ wait_for_seconds(0.3)
 #jede trychtýř
 mot.move_tank(15, "cm", -40, -40)
 rad.run_for_seconds(1, -100)
-#rad.run_for_seconds(0.5, 80)
-#rad.run_for_seconds(0.5, 60)
 vzv.run_for_degrees(100, 100)
 gyro_steer_l(-90, -35, 35)
 mot.move_tank(5, "cm", 40, 40)
@@ -171,5 +181,5 @@ rad.run_for_seconds(0.5, -50)
 mot.move_tank(5, "cm", -50, -50)
 gyro_steer_l(-75, -90, 90)
 move_sec(100, 100, 1.75)
-#stojí
-#nova
+
+#koneeec

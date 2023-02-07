@@ -153,8 +153,101 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-rad.run_for_seconds(0.8, -50)
-wait_for_seconds(1)
-rad.run_for_seconds(0.5, 100)
+#def jizda_po_care_na_senzor_dlouha(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
+#    motr.set_degrees_counted(0)
+#    error = 0
+#    integracni = 0
+#    derivacni = 0
+#    soucet_kp = 0
+#    soucet_ki = 0
+#    soucet_kd = 0
+#    last_error = 0
+#    soucet = 0
+#    if zastavovaci_senzor=="l":
+#        while cl.get_reflected_light()<=cerna_zarovnani:
+#            if jaky_senzor == "l":
+#                error = cl.get_reflected_light() - stred
+#            elif jaky_senzor == "r":
+#                error = cr.get_reflected_light() - stred
+#            integracni = integracni + error
+#            derivacni = error - last_error
+#            soucet_kp = kp * error
+#            soucet_ki = ki * integracni
+#            soucet_kd = kd * derivacni
+#            soucet = soucet_kp + soucet_ki + soucet_kd
+#            if strana == "l":
+#                motor_levy = int(jak_rychle + soucet)
+#                motor_pravy = int(jak_rychle - soucet)
+#                mot.start_tank_at_power(motor_levy, motor_pravy)
+#            elif strana == "r":
+#                motor_levy = int(jak_rychle - soucet)
+#                motor_pravy = int(jak_rychle + soucet)
+#                mot.start_tank_at_power(motor_levy, motor_pravy)
+#            last_error = error
+#            #print(soucet)
+#        mot.stop()
+#
+#    elif zastavovaci_senzor=="r":
+#        while cr.get_reflected_light()<=cerna_zarovnani:
+#            if jaky_senzor == "l":
+#                error = cl.get_reflected_light() - stred
+#            elif jaky_senzor == "r":
+#                error = cr.get_reflected_light() - stred
+#            integracni = integracni + error
+#            derivacni = error - last_error
+#            soucet_kp = kp * error
+#            soucet_ki = ki * integracni
+#            soucet_kd = kd * derivacni
+#            soucet = soucet_kp + soucet_ki + soucet_kd
+#            if strana == "l":
+#                motor_levy = int(jak_rychle + soucet)
+#                motor_pravy = int(jak_rychle - soucet)
+#                mot.start_tank_at_power(motor_levy, motor_pravy)
+#            elif strana == "r":
+#                motor_levy = int(jak_rychle - soucet)
+#                motor_pravy = int(jak_rychle + soucet)
+#                mot.start_tank_at_power(motor_levy, motor_pravy)
+#            last_error = error
+#            #print(soucet)
+#        mot.stop()
+#
 
 
+def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
+    motr.set_degrees_counted(0)
+    error = 0
+    integracni = 0
+    derivacni = 0
+    soucet_kp = 0
+    soucet_ki = 0
+    soucet_kd = 0
+    last_error = 0
+    soucet = 0
+    if zastavovaci_senzor == "l":
+        zastavovaci_strana=cl
+    elif zastavovaci_senzor =="r":
+        zastavovaci_strana=cr
+    while zastavovaci_strana.get_reflected_light()<=cerna_zarovnani:
+        if jaky_senzor == "l":
+            error = cl.get_reflected_light() - stred
+        elif jaky_senzor == "r":
+            error = cr.get_reflected_light() - stred
+        integracni = integracni + error
+        derivacni = error - last_error
+        soucet_kp = kp * error
+        soucet_ki = ki * integracni
+        soucet_kd = kd * derivacni
+        soucet = soucet_kp + soucet_ki + soucet_kd
+        if strana == "l":
+            motor_levy = int(jak_rychle + soucet)
+            motor_pravy = int(jak_rychle - soucet)
+            mot.start_tank_at_power(motor_levy, motor_pravy)
+        elif strana == "r":
+            motor_levy = int(jak_rychle - soucet)
+            motor_pravy = int(jak_rychle + soucet)
+            mot.start_tank_at_power(motor_levy, motor_pravy)
+        last_error = error
+        #print(soucet)
+    mot.stop()
+
+jizda_po_care_na_senzor("r", 30, "l", "l")

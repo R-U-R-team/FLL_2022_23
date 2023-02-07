@@ -140,11 +140,10 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
 
 hub.motion_sensor.reset_yaw_angle()
 
+#jede na čáru
 #tady se to může posrat
 mot.start_tank(99, 95)
 #tady se to může posrat
-
-#jede na čáru
 wait_until(cr.get_reflected_light, less_than, cerna_zarovnani)
 mot.stop()
 wait_for_seconds(0.3)
@@ -157,20 +156,11 @@ move_gyro(200, 0, 30)
 wait_for_seconds(0.3)
 gyro_steer_l(-86, -30, 30)
 wait_for_seconds(0.3)
-#if(cr.get_reflected_light()<60):
-#    vzv.run_for_degrees(200, 100)
-#else:
-#    move_gyro(20, 3, 30)
 
-#move_gyro(50, 1, 30)
-#vzv.run_for_degrees(150, 100)
-
-
-##jede na mojitovač
+#jede na mojitovač
 mot.start_tank(30, 30)
 cr.wait_until_color("black")
 mot.stop()
-#mot.move_tank(2, "cm", -20, -20)
 vzv.run_for_degrees(360, 100)
 mot.move_tank(3, "cm", 20, 20)
 rad.run_for_seconds(0.75, 100)
@@ -191,8 +181,9 @@ move_gyro(-200, -1, -40, "vetsi")
 gyro_steer_r(20, 40, -40)
 vzv.run_for_seconds(0.75, 50)
 vzv.run_for_degrees(100, -100)
-#mot.move_tank(5, "cm", -30, -30)
 
 #jede do baze
 gyro_steer_l(-25, -50, 0)
 move_gyro(1600, 0, 100)
+
+#koneeec
