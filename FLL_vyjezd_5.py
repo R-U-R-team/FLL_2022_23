@@ -177,38 +177,50 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
 hub.motion_sensor.reset_yaw_angle()
 
 #jede vodníka
-move_gyro(650, 0, 50)
+
+mot.move_tank(650, "degrees", 50, 50)
 wait_for_seconds(0.3)
-gyro_steer_l(-40, 0, 50)
+gyro_steer_l(-31, 0, 50)
 wait_for_seconds(0.3)
-move_gyro(500, 0, 50)
+mot.move_tank(550, "degrees", 50, 50)
 vzv.run_for_degrees(360, 100)
 vzv.run_for_degrees(350, -100)
 
+
+
+#move_gyro(650, 0, 50)
+#wait_for_seconds(0.3)
+#gyro_steer_l(-40, 0, 50)
+#wait_for_seconds(0.3)
+#move_gyro(550, 0, 50)
+#vzv.run_for_degrees(360, 100)
+#vzv.run_for_degrees(350, -100)
+
 #jede bílý kontejner
-move_gyro(350, 0, 50)
+mot.move_tank(300, "degrees", 50, 50)
 vzv.run_for_degrees(330, 100)
-gyro_steer_l(-10, -30, 30)
-move_gyro(520, 0, 50)
-gyro_steer_l(-32, -50, 0)
-jizda_po_care_na_senzor("l", 35, "r", "r")
+gyro_steer_l(-15, -30, 30)
+mot.move_tank(520, "degrees", 50, 50)
+mot.start_tank_at_power(-50, 0)
+wait_until(cr.get_reflected_light, less_than, cerna_zarovnani)
 mot.stop()
+jizda_po_care_na_senzor("l", 35, "r", "r", 0.11)
 move_gyro(150, 0, 50)
 vzv.run_for_degrees(340, -100)
 move_gyro(-100, 0, -50, "vetsi")
-wait_for_seconds(0.8)
+wait_for_seconds(0.3)
 vzv.run_for_degrees(340, 100)
 move_gyro(-250, 0, -50, "vetsi")
-gyro_steer_r(35, 40, -40)
+gyro_steer_r(30, 40, -40)
 
 #jede zbytek
-vzv.run_for_degrees(340, -100)
-move_gyro(400, 0, 60)
-rad.run_for_seconds(0.5, -75)
-wait_for_seconds(0.3)
-rad.run_for_seconds(0.5, 100)
-move_gyro(200, 0, 60)
-vzv.run_for_seconds(0.9, 100)
+vzv.run_for_degrees(330, -100)
+move_gyro(480, 0, 60)
+rad.run_for_seconds(0.5, -50)
+wait_for_seconds(0.5)
+rad.run_for_seconds(0.5, 50)
+move_gyro(100, 0, 50)
+vzv.run_for_seconds(1, 100)
 
 
 ##jede ručku
@@ -234,4 +246,5 @@ vzv.run_for_seconds(0.9, 100)
 #move_gyro(200, 0, 60)
 #vzv.run_for_seconds(0.9, 100)
 #
+exit()
 ##koneeeec
