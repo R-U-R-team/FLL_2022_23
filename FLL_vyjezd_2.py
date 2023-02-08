@@ -174,7 +174,7 @@ mot.move_tank(5, "cm", -30, -30)
 #jede k vodníkovi
 gyro_steer_r(90, 30, -30)
 mot.move_tank(15, "cm", -30,-30)
-zarovnani_l(25, 25)
+zarovnani_r(25, 25)
 move_gyro(870, -1, 45)
 vzv.run_for_degrees(150, 100)
 move_gyro(-200, -1, -40, "vetsi")
@@ -186,4 +186,5 @@ vzv.run_for_degrees(100, -100)
 gyro_steer_l(-25, -50, 0)
 move_gyro(1600, 0, 100)
 
+exit()
 #koneeec

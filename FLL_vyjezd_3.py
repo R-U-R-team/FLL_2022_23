@@ -158,11 +158,11 @@ move_sec(30, 30, 1)
 mot.move_tank(5, "cm", -30, -30)
 vzv.run_for_degrees(-300, 100)
 mot.move_tank(10, "cm", -30, -30)
-gyro_steer_r(36, 30, -30)
+gyro_steer_r(34, 30, -30)
 wait_for_seconds(0.3)
 
 #jede mochyta
-mot.move_tank(23, "cm", 30, 30)
+mot.move_tank(25, "cm", 30, 30)
 gyro_steer_r(55, 30, -20)
 wait_for_seconds(0.3)
 mot.move_tank(10, "cm", -30, -30)
@@ -179,4 +179,5 @@ mot.move_tank(38, "cm", -30, -30)
 gyro_steer_l(-15, -30, 0)
 mot.move_tank(50, "cm", -100, -100)
 
+exit()
 #koneec

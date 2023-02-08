@@ -182,4 +182,5 @@ mot.move_tank(5, "cm", -50, -50)
 gyro_steer_l(-75, -90, 90)
 move_sec(100, 100, 1.75)
 
+exit()
 #koneeec

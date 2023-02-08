@@ -34,9 +34,11 @@ def move_sec(rychlostl, rychlostr, sekundy):
     wait_for_seconds(sekundy)
     mot.stop()
 
-def move_gyro(dalka, smer, rychl, mensivetsi = "mensi"):
+def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", reset_gyro="y"):
     motr.set_degrees_counted(0)
-    hub.motion_sensor.reset_yaw_angle()
+
+    if(reset_gyro=="y"):
+        hub.motion_sensor.reset_yaw_angle()
 
     if (mensivetsi == "mensi"):
         while motr.get_degrees_counted() < dalka:
@@ -64,8 +66,10 @@ def gyro_steer_r(pozitivni_zatacka, levy, pravy):
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu
-def gyro_steer_l(negativni_zatacka, levy, pravy):
-    hub.motion_sensor.reset_yaw_angle()
+def gyro_steer_l(negativni_zatacka, levy, pravy, reset_gyro="y"): 
+    if(reset_gyro=="y"):
+        hub.motion_sensor.reset_yaw_angle()
+
     while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
@@ -178,33 +182,24 @@ hub.motion_sensor.reset_yaw_angle()
 
 #jede vodníka
 
-mot.move_tank(650, "degrees", 50, 50)
+move_gyro(700, 0, 50, "mensi", "n")
 wait_for_seconds(0.3)
-gyro_steer_l(-31, 0, 50)
+gyro_steer_l(-38, -35, 35, "n")
 wait_for_seconds(0.3)
-mot.move_tank(550, "degrees", 50, 50)
+move_gyro(550, 0, 50)
 vzv.run_for_degrees(360, 100)
 vzv.run_for_degrees(350, -100)
 
-
-
-#move_gyro(650, 0, 50)
-#wait_for_seconds(0.3)
-#gyro_steer_l(-40, 0, 50)
-#wait_for_seconds(0.3)
-#move_gyro(550, 0, 50)
-#vzv.run_for_degrees(360, 100)
-#vzv.run_for_degrees(350, -100)
-
 #jede bílý kontejner
-mot.move_tank(300, "degrees", 50, 50)
+move_gyro(300, 0, 50)
 vzv.run_for_degrees(330, 100)
-gyro_steer_l(-15, -30, 30)
-mot.move_tank(520, "degrees", 50, 50)
+gyro_steer_l(-10, -30, 30)
+wait_for_seconds(0.5)
+move_gyro(450, 0, 50)
 mot.start_tank_at_power(-50, 0)
 wait_until(cr.get_reflected_light, less_than, cerna_zarovnani)
 mot.stop()
-jizda_po_care_na_senzor("l", 35, "r", "r", 0.11)
+jizda_po_care_na_senzor("l", 35, "r", "r", 0.18)
 move_gyro(150, 0, 50)
 vzv.run_for_degrees(340, -100)
 move_gyro(-100, 0, -50, "vetsi")
