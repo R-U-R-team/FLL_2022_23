@@ -105,6 +105,42 @@ def zarovnani_r(rychlost_leva, rychlost_prava):
         mot.start_tank_at_power(-25, 0)
     mot.stop()
 
+def zarovnani_rozpoznani(rychlost_leva, rychlost_prava):
+    while(cr.get_reflected_light()>=cerna_zarovnani and cl.get_reflected_light()>=cerna_zarovnani):
+        mot.start_tank(rychlost_leva, rychlost_prava)
+    if(cl.get_reflected_light()<=cerna_zarovnani):
+        while cr.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()>=stred:
+            mot.start_tank_at_power(rychlost_leva, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+    elif(cr.get_reflected_light()<=cerna_zarovnani):
+        while cl.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cr.get_reflected_light()>=stred:
+            mot.start_tank_at_power(0, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+
 def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
     motr.set_degrees_counted(0)
     error = 0
@@ -154,7 +190,8 @@ zarovnani_l(25, 25)
 wait_for_seconds(0.3)
 move_gyro(200, 0, 30)
 wait_for_seconds(0.3)
-gyro_steer_l(-86, -30, 30)
+gyro_steer_l(-93, -30, 30)
+gyro_steer_r(1, 30, -30)
 wait_for_seconds(0.3)
 
 #jede na mojitovač
@@ -166,20 +203,20 @@ mot.move_tank(3, "cm", 20, 20)
 rad.run_for_seconds(0.75, 100)
 vzv.run_for_degrees(-360, 100)
 wait_for_seconds(0.5)
-mot.move_tank(20, "degrees", 30, 30)
-mot.move_tank(20, "degrees", -30, 0)
+mot.move_tank(0.4, "seconds", 30, 30)
+mot.move_tank(0.4, "seconds", -30, 0)
 rad.run_for_degrees(500, -100)
-mot.move_tank(5, "cm", -30, -30)
+mot.move_tank(8, "cm", -30, -30)
 
 #jede k vodníkovi
-gyro_steer_r(90, 30, -30)
+gyro_steer_r(95, 30, -30)
 mot.move_tank(15, "cm", -30,-30)
-zarovnani_r(25, 25)
-move_gyro(870, -1, 45)
-vzv.run_for_degrees(150, 100)
-move_gyro(-200, -1, -40, "vetsi")
+zarovnani_l(25, 25)
+move_gyro(890, -1, 45)
+vzv.run_for_degrees(160, 100)
+move_gyro(-200, 0, -40, "vetsi")
 gyro_steer_r(20, 40, -40)
-vzv.run_for_seconds(0.75, 50)
+vzv.run_for_seconds(0.75, 50)   
 vzv.run_for_degrees(100, -100)
 
 #jede do baze

@@ -158,17 +158,17 @@ move_sec(30, 30, 1)
 mot.move_tank(5, "cm", -30, -30)
 vzv.run_for_degrees(-300, 100)
 mot.move_tank(10, "cm", -30, -30)
-gyro_steer_r(34, 30, -30)
+gyro_steer_r(33, 30, -30)
 wait_for_seconds(0.3)
 
 #jede mochyta
-mot.move_tank(25, "cm", 30, 30)
+mot.move_tank(24, "cm", 30, 30)
 gyro_steer_r(55, 30, -20)
 wait_for_seconds(0.3)
 mot.move_tank(10, "cm", -30, -30)
-gyro_steer_r(35, 30, -30)
+gyro_steer_r(33, 30, -30)
 mot.move_tank(10, "cm", 40, 40)
-gyro_steer_l(-38, 0, 50)
+gyro_steer_l(-33, 0, 50)
 jizda_po_care(600, 50, "r", "r", 0.36)
 
 #vrací se se vším

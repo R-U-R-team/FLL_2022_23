@@ -250,4 +250,107 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
         #print(soucet)
     mot.stop()
 
-vzv.run_for_seconds(1, 100)
+def zarovnani_l(rychlost_leva, rychlost_prava):
+    while cl.get_reflected_light()>=cerna_zarovnani:
+        mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+    mot.stop()
+    while cr.get_reflected_light()>=stred:
+        mot.start_tank_at_power(0, rychlost_prava)
+    mot.stop()
+    while cl.get_reflected_light()<=cerna_zarovnani:
+        mot.start_tank_at_power(-25, 0)
+    mot.stop()
+    while cl.get_reflected_light()<=stred:
+        mot.start_tank_at_power(-25, 0)
+    mot.stop()
+    while cr.get_reflected_light()<=stred:
+        mot.start_tank_at_power(0, -25)
+    mot.stop()
+
+def zarovnani_r(rychlost_leva, rychlost_prava):
+    while cr.get_reflected_light()>=cerna_zarovnani:
+        mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+    mot.stop()
+    while cl.get_reflected_light()>=stred:
+        mot.start_tank_at_power(rychlost_leva, 0)
+    mot.stop()
+    while cr.get_reflected_light()<=cerna_zarovnani:
+        mot.start_tank_at_power(0, -25)
+    mot.stop()
+    while cr.get_reflected_light()<=stred:
+        mot.start_tank_at_power(0, -25)
+    mot.stop()
+    while cl.get_reflected_light()<=stred:
+        mot.start_tank_at_power(-25, 0)
+    mot.stop()
+
+def zarovnani_rozpoznani(rychlost_leva, rychlost_prava):
+    if(cr.get_reflected_light<=cerna_zarovnani):
+        while cr.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()>=stred:
+            mot.start_tank_at_power(rychlost_leva, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+    elif(cl.get_reflected_light<=cerna_zarovnani):
+        while cl.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cr.get_reflected_light()>=stred:
+            mot.start_tank_at_power(0, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+
+
+def zarovnani_rozpoznani(rychlost_leva, rychlost_prava):
+    while(cr.get_reflected_light()>=cerna_zarovnani and cl.get_reflected_light()>=cerna_zarovnani):
+        mot.start_tank(rychlost_leva, rychlost_prava)
+    if(cr.get_reflected_light<=cerna_zarovnani):
+        while cr.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()>=stred:
+            mot.start_tank_at_power(rychlost_leva, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+    elif(cl.get_reflected_light<=cerna_zarovnani):
+        while cl.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cr.get_reflected_light()>=stred:
+            mot.start_tank_at_power(0, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
