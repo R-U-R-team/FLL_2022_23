@@ -1,9 +1,8 @@
 # LEGO type:standard slot:2 autostart
 
-from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
-from spike.control import wait_for_seconds, wait_until, Timer
+from spike import PrimeHub, ColorSensor, Motor, MotorPair
+from spike.control import wait_for_seconds, wait_until
 from spike.operator import less_than
-import math
 
 hub = PrimeHub()
 sekundy = 0
@@ -27,7 +26,6 @@ resmot = motr.set_degrees_counted(0)
 mot.set_default_speed(30)
 
 mot.set_motor_rotation(17.6, "cm")
-hub.motion_sensor.reset_yaw_angle()
 
 def move_sec(rychlostl, rychlostr, sekundy):
     mot.start_tank(rychlostl, rychlostr)
@@ -174,7 +172,11 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-hub.motion_sensor.reset_yaw_angle()
+hub.status_light.on('violet')
+hub.light_matrix.show_image('PACMAN')
+hub.right_button.wait_until_pressed()
+hub.light_matrix.off()
+hub.status_light.on("green")
 
 #jede na čáru
 #tady se to může posrat
@@ -212,7 +214,7 @@ mot.move_tank(8, "cm", -30, -30)
 gyro_steer_r(95, 30, -30)
 mot.move_tank(15, "cm", -30,-30)
 zarovnani_l(25, 25)
-move_gyro(890, -1, 45)
+move_gyro(890, -2, 45)
 vzv.run_for_degrees(160, 100)
 move_gyro(-200, 0, -40, "vetsi")
 gyro_steer_r(20, 40, -40)
@@ -223,5 +225,5 @@ vzv.run_for_degrees(100, -100)
 gyro_steer_l(-25, -50, 0)
 move_gyro(1600, 0, 100)
 
-exit()
+raise SystemExit
 #koneeec

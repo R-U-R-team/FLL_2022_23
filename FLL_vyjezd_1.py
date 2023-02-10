@@ -1,9 +1,7 @@
 # LEGO type:standard slot:1 autostart
 
-from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
-from spike.control import wait_for_seconds, wait_until, Timer
-from spike.operator import less_than
-import math
+from spike import PrimeHub, ColorSensor, Motor, MotorPair
+from spike.control import wait_for_seconds
 
 hub = PrimeHub()
 sekundy = 0
@@ -27,7 +25,7 @@ resmot = motr.set_degrees_counted(0)
 mot.set_default_speed(30)
 
 mot.set_motor_rotation(17.6, "cm")
-hub.motion_sensor.reset_yaw_angle()
+
 
 def move_sec(rychlostl, rychlostr, sekundy):
     mot.start_tank(rychlostl, rychlostr)
@@ -138,7 +136,11 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-hub.motion_sensor.reset_yaw_angle()
+hub.status_light.on('violet')
+hub.light_matrix.show_image('PACMAN')
+hub.right_button.wait_until_pressed()
+hub.light_matrix.off()
+hub.status_light.on("green")
 
 #jede televize
 move_gyro(700, 0, 60)
@@ -182,5 +184,5 @@ mot.move_tank(5, "cm", -50, -50)
 gyro_steer_l(-75, -90, 90)
 move_sec(100, 100, 1.75)
 
-exit()
+raise SystemExit
 #koneeec

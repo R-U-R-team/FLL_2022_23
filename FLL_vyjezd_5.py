@@ -1,9 +1,8 @@
-# LEGO type:standard slot:5 autostart
+# LEGO type:standard slot:4 autostart
 
-from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
-from spike.control import wait_for_seconds, wait_until, Timer
+from spike import PrimeHub, ColorSensor, Motor, MotorPair
+from spike.control import wait_for_seconds, wait_until
 from spike.operator import less_than
-import math
 
 hub = PrimeHub()
 sekundy = 0
@@ -27,7 +26,6 @@ resmot = motr.set_degrees_counted(0)
 mot.set_default_speed(30)
 
 mot.set_motor_rotation(17.6, "cm")
-hub.motion_sensor.reset_yaw_angle()
 
 def move_sec(rychlostl, rychlostr, sekundy):
     mot.start_tank(rychlostl, rychlostr)
@@ -178,7 +176,11 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
         print(soucet)
     mot.stop()
 
-hub.motion_sensor.reset_yaw_angle()
+hub.status_light.on('violet')
+hub.light_matrix.show_image('PACMAN')
+hub.right_button.wait_until_pressed()
+hub.light_matrix.off()
+hub.status_light.on("green")
 
 #jede vodníka
 
@@ -217,29 +219,5 @@ rad.run_for_seconds(0.5, 50)
 move_gyro(120, 0, 50)
 vzv.run_for_seconds(1, 100)
 
-
-##jede ručku
-#move_gyro(590, 0, 50)
-#gyro_steer_l(-28, -50, 0)
-#mot.start_tank(40, 40)
-#wait_until(cl.get_reflected_light, less_than, cerna_zarovnani)
-#mot.stop()
-#move_gyro(150, 0, 50)
-#vzv.run_for_degrees(340, -100)
-#move_gyro(-100, 0, -50, "vetsi")
-#wait_for_seconds(0.8)
-#vzv.run_for_degrees(340, 100)
-#move_gyro(-280, 0, -50, "vetsi")
-#gyro_steer_r(35, 40, -40)
-#
-##jede zbytek
-#vzv.run_for_degrees(340, -100)
-#move_gyro(400, 0, 60)
-#rad.run_for_seconds(0.5, -75)
-#wait_for_seconds(0.3)
-#rad.run_for_seconds(0.5, 100)
-#move_gyro(200, 0, 60)
-#vzv.run_for_seconds(0.9, 100)
-#
-exit()
-##koneeeec
+raise SystemExit
+#koneeeec
