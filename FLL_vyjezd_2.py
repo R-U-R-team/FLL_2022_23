@@ -3,6 +3,7 @@
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until
 from spike.operator import less_than
+from spike.control import Timer
 
 hub = PrimeHub()
 sekundy = 0
@@ -20,6 +21,7 @@ motr = Motor("B")
 motl = Motor("A")
 vzv = Motor("D")
 rad = Motor("C")
+timer = Timer()
 yaw = hub.motion_sensor.get_yaw_angle()
 resgyr = hub.motion_sensor.reset_yaw_angle()
 resmot = motr.set_degrees_counted(0)
@@ -65,7 +67,8 @@ def gyro_steer_r(pozitivni_zatacka, levy, pravy):
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu
 def gyro_steer_l(negativni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
-    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka:
+    timer.reset()
+    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka and timer.now()<3:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 
@@ -173,10 +176,11 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
     mot.stop()
 
 hub.status_light.on('violet')
-hub.light_matrix.show_image('PACMAN')
+hub.light_matrix.show_image('CLOCK3')
 hub.right_button.wait_until_pressed()
 hub.light_matrix.off()
 hub.status_light.on("green")
+wait_for_seconds(0.5)
 
 #jede na čáru
 #tady se to může posrat
@@ -214,7 +218,7 @@ mot.move_tank(8, "cm", -30, -30)
 gyro_steer_r(95, 30, -30)
 mot.move_tank(15, "cm", -30,-30)
 zarovnani_l(25, 25)
-move_gyro(890, -2, 45)
+move_gyro(890, -1, 45)
 vzv.run_for_degrees(160, 100)
 move_gyro(-200, 0, -40, "vetsi")
 gyro_steer_r(20, 40, -40)

@@ -136,10 +136,11 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
     mot.stop()
 
 hub.status_light.on('violet')
-hub.light_matrix.show_image('PACMAN')
+hub.light_matrix.show_image('CLOCK6')
 hub.right_button.wait_until_pressed()
 hub.light_matrix.off()
 hub.status_light.on("green")
+wait_for_seconds(0.5)
 
 #jede_ropa
 mot.move_tank(10, "cm", 50, 50)
