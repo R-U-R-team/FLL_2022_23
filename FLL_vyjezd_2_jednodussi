@@ -10,7 +10,7 @@ sekundy = 0
 rychlost = 0
 cerna = 25
 bila = 99
-cerna_zarovnani = cerna + 5
+cerna_zarovnani = cerna + 8
 stred = (cerna + bila) // 2
 
 
@@ -206,8 +206,10 @@ hub.light_matrix.off()
 hub.status_light.on("green")
 wait_for_seconds(0.5)
 
-#
+#jede na čáru
 move_gyro_senzor(0, 95, "prava", "y", 0.6)
+
+#jede k vodníkovi
 mot.move_tank(4, "cm", -30, -30)
 zarovnani_l(35, 35)
 vzv.run_for_degrees(100, 100)
@@ -216,10 +218,12 @@ gyro_steer_r(30, 30, -30)
 mot.move_tank(4, "cm", 30, 30)
 vzv.run_for_degrees(150, 100)
 vzv.run_for_degrees(-150, 100)
-mot.move_tank(11, "cm", -50, -50)
-gyro_steer_l(-26, -30, 30)
+mot.move_tank(10, "cm", -50, -50)
+gyro_steer_l(-24, -30, 30)
 vzv.run_for_degrees(-100, 100)
+
+#jede do bejzu
 move_gyro(1600, 0, 80)
 
-
 raise SystemExit
+#koneeeec

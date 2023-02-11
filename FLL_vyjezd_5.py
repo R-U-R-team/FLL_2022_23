@@ -58,32 +58,6 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", reset_gyro="y"):
             print(errorsteer)
         mot.stop()
 
-def move_gyro(dalka, smer, rychl, mensivetsi = "leva", reset_gyro="y"):
-    motr.set_degrees_counted(0)
-
-    if(reset_gyro=="y"):
-        hub.motion_sensor.reset_yaw_angle()
-
-    if (mensivetsi == "leva"):
-        while cl.get_reflected_light >= cerna_zarovnani:
-            Prop = 0.6
-            errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
-            speedl = int(rychl + errorsteer)
-            speedr = int(rychl - errorsteer)
-            mot.start_tank_at_power(speedl, speedr)
-            print(errorsteer)
-        mot.stop()
-
-    elif(mensivetsi == "prava"):
-        while cr.get_reflected_light >= cerna_zarovnani:
-            Prop = 0.6
-            errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
-            speedl = int(rychl + errorsteer)
-            speedr = int(rychl - errorsteer)
-            mot.start_tank_at_power(speedl, speedr)
-            print(errorsteer)
-        mot.stop()
-
 def gyro_steer_r(pozitivni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
     while hub.motion_sensor.get_yaw_angle()<=pozitivni_zatacka:
@@ -210,7 +184,8 @@ hub.status_light.on("green")
 wait_for_seconds(0.5)
 
 #jede vodníka
-move_gyro(700, -3, 50, "mensi", "n")
+hub.motion_sensor.reset_yaw_angle()
+move_gyro(700, 0, 50, "mensi", "n")
 wait_for_seconds(0.3)
 gyro_steer_l(-38, -35, 35, "n")
 wait_for_seconds(0.3)
