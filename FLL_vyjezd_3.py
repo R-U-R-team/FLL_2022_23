@@ -1,7 +1,8 @@
 # LEGO type:standard slot:3 autostart
 
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
-from spike.control import wait_for_seconds
+from spike.control import wait_for_seconds, wait_until
+from spike.operator import greater_than_or_equal_to
 
 hub = PrimeHub()
 sekundy = 0
@@ -135,7 +136,7 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
-hub.status_light.on('violet')
+hub.status_light.on('red')
 hub.light_matrix.show_image('CLOCK6')
 hub.right_button.wait_until_pressed()
 hub.light_matrix.off()
@@ -144,7 +145,7 @@ wait_for_seconds(0.5)
 
 #jede_ropa
 mot.move_tank(10, "cm", 50, 50)
-jizda_po_care(1150, 35, "l", "l", 0.23)
+jizda_po_care(1150, 50, "l", "l", 0.36)
 wait_for_seconds(0.3)
 mot.move_tank(5, "cm", -30, -30)
 vzv.run_for_degrees(280, 100)
@@ -154,30 +155,39 @@ for i in range(2):
     vzv.run_for_degrees(-280, 100)
 
 #jede RUR
-mot.move_tank(3, "cm", 30, 30)
+mot.move_tank(2.8, "cm", 40, 40)
 vzv.run_for_degrees(300, 100)
 move_sec(30, 30, 1)
 mot.move_tank(5, "cm", -30, -30)
 vzv.run_for_degrees(-300, 100)
-mot.move_tank(10, "cm", -30, -30)
+mot.move_tank(10, "cm", -40, -40)
 gyro_steer_r(33, 30, -30)
 wait_for_seconds(0.3)
 
 #jede mochyta
-mot.move_tank(24, "cm", 30, 30)
+mot.move_tank(23, "cm", 40, 40)
 gyro_steer_r(60, 30, -20)
 wait_for_seconds(0.1)
-mot.move_tank(10, "cm", -30, -30)
-gyro_steer_r(33, 30, -30)
-mot.move_tank(12, "cm", 40, 40)
+mot.move_tank(10, "cm", -40, -40)
+wait_for_seconds(0.1)
+gyro_steer_r(33, 40, -40)
+wait_for_seconds(0.1)
+mot.start_tank_at_power(50, 50)
+wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
+#mot.stop()
+mot.move_tank(2, "cm", 50, 50)
+wait_for_seconds(0.1)
 gyro_steer_l(-33, 0, 50)
-jizda_po_care(600, 50, "r", "r", 0.36)
+jizda_po_care(600, 50, "r", "r", 0.40)
 
 #vrací se se vším
 rad.run_for_seconds(0.5, -100)
-mot.move_tank(24, "cm", -30, -30)
+mot.move_tank(24, "cm", -40, -40)
+wait_for_seconds(0.1)
 gyro_steer_l(-35, -50, 0)
-mot.move_tank(38, "cm", -30, -30)
+wait_for_seconds(0.1)
+mot.move_tank(38, "cm", -50, -50)
+wait_for_seconds(0.1)
 gyro_steer_l(-15, -30, 0)
 mot.move_tank(50, "cm", -100, -100)
 

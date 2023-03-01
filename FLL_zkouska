@@ -2,9 +2,9 @@
 
 from spike import PrimeHub, LightMatrix, Button, StatusLight, ForceSensor, MotionSensor, Speaker, ColorSensor, App, DistanceSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
+from spike.operator import greater_than_or_equal_to
 from math import *
 from math import pi
-import uasyncio
 
 
 class Motor_RUR(Motor):
@@ -354,3 +354,7 @@ def zarovnani_rozpoznani(rychlost_leva, rychlost_prava):
         while cr.get_reflected_light()<=stred:
             mot.start_tank_at_power(0, -25)
         mot.stop()
+
+mot.start_tank_at_power(50, 50)
+wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
+mot.stop()
