@@ -176,7 +176,7 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
         print(soucet)
     mot.stop()
 
-hub.status_light.on('violet')
+hub.status_light.on('red')
 hub.light_matrix.show_image('CLOCK9')
 hub.right_button.wait_until_pressed()
 hub.light_matrix.off()

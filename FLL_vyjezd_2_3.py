@@ -1,8 +1,9 @@
-# LEGO type:standard slot:3 autostart
+# LEGO type:standard slot:2 autostart
 
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until
-from spike.operator import greater_than_or_equal_to
+from spike.operator import less_than
+from spike.control import Timer
 
 hub = PrimeHub()
 sekundy = 0
@@ -20,6 +21,7 @@ motr = Motor("B")
 motl = Motor("A")
 vzv = Motor("D")
 rad = Motor("C")
+timer = Timer()
 yaw = hub.motion_sensor.get_yaw_angle()
 resgyr = hub.motion_sensor.reset_yaw_angle()
 resmot = motr.set_degrees_counted(0)
@@ -32,29 +34,50 @@ def move_sec(rychlostl, rychlostr, sekundy):
     wait_for_seconds(sekundy)
     mot.stop()
 
-def move_gyro(dalka, smer, rychl, mensivetsi = "mensi"):
+def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", kon_rych = 90,):
     motr.set_degrees_counted(0)
     hub.motion_sensor.reset_yaw_angle()
+    if rampup == "y":
 
-    if (mensivetsi == "mensi"):
-        while motr.get_degrees_counted() < dalka:
-            Prop = 0.6
-            errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
-            speedl = int(rychl + errorsteer)
-            speedr = int(rychl - errorsteer)
-            mot.start_tank_at_power(speedl, speedr)
-            print(errorsteer)
-        mot.stop()
+        if (mensivetsi == "mensi"):
+            while motr.get_degrees_counted() < dalka:
+         
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                if rychl< kon_rych:
+                    rychl = rychl + 1
+                print(errorsteer)
+            mot.stop()
 
-    elif(mensivetsi == "vetsi"):
-        while motr.get_degrees_counted() > dalka:
-            Prop = 0.6
-            errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
-            speedl = int(rychl + errorsteer)
-            speedr = int(rychl - errorsteer)
-            mot.start_tank_at_power(speedl, speedr)
-            print(errorsteer)
-        mot.stop()
+        elif(mensivetsi == "vetsi"):
+            while motr.get_degrees_counted() > dalka:           
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                print(errorsteer)
+            mot.stop()
+
+    elif rampup == "n":
+        if (mensivetsi == "mensi"):
+            while motr.get_degrees_counted() < dalka:            
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                print(errorsteer)
+            mot.stop()
+
+        elif(mensivetsi == "vetsi"):
+            while motr.get_degrees_counted() > dalka:           
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                print(errorsteer)
+            mot.stop()
 
 
 def gyro_steer_r(pozitivni_zatacka, levy, pravy):
@@ -65,7 +88,8 @@ def gyro_steer_r(pozitivni_zatacka, levy, pravy):
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu
 def gyro_steer_l(negativni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
-    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka:
+    timer.reset()
+    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka and timer.now()<3:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 
@@ -103,6 +127,42 @@ def zarovnani_r(rychlost_leva, rychlost_prava):
         mot.start_tank_at_power(-25, 0)
     mot.stop()
 
+def zarovnani_rozpoznani(rychlost_leva, rychlost_prava):
+    while(cr.get_reflected_light()>=cerna_zarovnani and cl.get_reflected_light()>=cerna_zarovnani):
+        mot.start_tank(rychlost_leva, rychlost_prava)
+    if(cl.get_reflected_light()<=cerna_zarovnani):
+        while cr.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()>=stred:
+            mot.start_tank_at_power(rychlost_leva, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+    elif(cr.get_reflected_light()<=cerna_zarovnani):
+        while cl.get_reflected_light()>=cerna_zarovnani:
+            mot.start_tank_at_power(rychlost_leva, rychlost_prava)
+        mot.stop()
+        while cr.get_reflected_light()>=stred:
+            mot.start_tank_at_power(0, rychlost_prava)
+        mot.stop()
+        while cl.get_reflected_light()<=cerna_zarovnani:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cl.get_reflected_light()<=stred:
+            mot.start_tank_at_power(-25, 0)
+        mot.stop()
+        while cr.get_reflected_light()<=stred:
+            mot.start_tank_at_power(0, -25)
+        mot.stop()
+
 def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
     motr.set_degrees_counted(0)
     error = 0
@@ -137,59 +197,24 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
     mot.stop()
 
 hub.status_light.on('red')
-hub.light_matrix.show_image('CLOCK6')
+hub.light_matrix.show_image('CLOCK3')
 hub.right_button.wait_until_pressed()
 hub.light_matrix.off()
 hub.status_light.on("green")
 wait_for_seconds(0.5)
 
-#jede_ropa
-mot.move_tank(10, "cm", 50, 50)
-jizda_po_care(1150, 50, "l", "l", 0.36)
-wait_for_seconds(0.3)
-mot.move_tank(5, "cm", -30, -30)
-vzv.run_for_degrees(280, 100)
-vzv.run_for_degrees(-270, 100)
-for i in range(2):
-    vzv.run_for_degrees(280, 100)
-    vzv.run_for_degrees(-280, 100)
+move_gyro(1310, 2, 0, "mensi", 1, "y")
+rad.run_for_degrees(120, 100)
+mot.move_tank(2, "cm", 25, 25)
+jizda_po_care(200, 25, "l", "l", 0.3)
 
-#jede RUR
-mot.move_tank(2.8, "cm", 40, 40)
-vzv.run_for_degrees(300, 100)
-move_sec(30, 30, 1)
-mot.move_tank(5, "cm", -30, -30)
-vzv.run_for_degrees(-300, 100)
-mot.move_tank(10, "cm", -40, -40)
-gyro_steer_r(33, 30, -30)
-wait_for_seconds(0.3)
 
-#jede mochyta
-mot.move_tank(23, "cm", 40, 40)
-gyro_steer_r(60, 30, -20)
-wait_for_seconds(0.1)
-mot.move_tank(10, "cm", -40, -40)
-wait_for_seconds(0.1)
-gyro_steer_r(33, 40, -40)
-wait_for_seconds(0.1)
-mot.start_tank_at_power(50, 50)
-wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
-#mot.stop()
-mot.move_tank(2, "cm", 50, 50)
-wait_for_seconds(0.1)
-gyro_steer_l(-33, 0, 50)
-jizda_po_care(600, 50, "r", "r", 0.40)
 
-#vrací se se vším
-rad.run_for_seconds(0.5, -100)
-mot.move_tank(22, "cm", -40, -40)
-wait_for_seconds(0.1)
-gyro_steer_l(-35, -50, 0)
-wait_for_seconds(0.1)
-mot.move_tank(38, "cm", -50, -50)
-wait_for_seconds(0.1)
-gyro_steer_l(-15, -30, 0)
-mot.move_tank(50, "cm", -100, -100)
+
+
+
+
+
 
 raise SystemExit
-#koneec
+#koneeec

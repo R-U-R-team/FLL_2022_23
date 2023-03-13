@@ -355,6 +355,92 @@ def zarovnani_rozpoznani(rychlost_leva, rychlost_prava):
             mot.start_tank_at_power(0, -25)
         mot.stop()
 
-mot.start_tank_at_power(50, 50)
-wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
-mot.stop()
+def rampup_sec(poc_rych, kon_rych, za_jak_dlouho):
+        rychlosti = kon_rych - poc_rych
+        za_jak_dlouho = za_jak_dlouho / rychlosti
+        abs_za_jak_dlouho = abs(za_jak_dlouho)
+        posun = za_jak_dlouho / abs_za_jak_dlouho
+        jeste_poc = 0
+        jeste_kon = 1
+        while(jeste_poc < jeste_kon):
+            mot.start(poc_rych)
+            wait_for_seconds(abs_za_jak_dlouho)
+            poc_rych = int(poc_rych + posun)
+            jeste_poc = poc_rych * posun
+            jeste_kon = kon_rych * posun
+        mot.stop()
+
+def rampup_degrees(poc_rych, kon_rych, degrees):
+    rychlost = kon_rych / 2
+    degrees = degrees / rychlost
+    abs_degrees = abs(degrees)
+    posun = degrees / abs_degrees
+    while(najeto < degrees):
+        mot.start(poc_rych)
+        motr.set_degrees_counted(0)
+        wait_until(motr.get_degrees_counted()>degrees)
+        poc_rych = int(poc_rych + posun)
+        najeto = motl.get_degrees_counted()
+    mot.stop()
+
+
+def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", poc_rych = 20, kon_rych = 90, degrees = 100):
+    motr.set_degrees_counted(0)
+    hub.motion_sensor.reset_yaw_angle()
+    if rampup == "y":
+
+        if (mensivetsi == "mensi"):
+            while motr.get_degrees_counted() < dalka:
+
+#                while (poc_rych < kon_rych):
+#                    mot.start_tank(poc_rych, poc_rych)
+#                    wait_for_seconds(0.2)
+#                    poc_rych = poc_rych + 5
+
+
+#                while(najeto < degrees):
+#                    mot.start_tank(poc_rych, poc_rych)
+#                    motr.set_degrees_counted(0)
+#                    wait_until(motr.get_degrees_counted,greater_than_or_equal_to,degrees_zrych)
+#                    #wait until je retardované
+#                    poc_rych = int(poc_rych + posun)
+#                    najeto = motl.get_degrees_counted()
+#               mot.stop()           
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                if rychl< kon_rych:
+                    rychl = rychl + 5
+                print(errorsteer)
+            mot.stop()
+
+        elif(mensivetsi == "vetsi"):
+            while motr.get_degrees_counted() > dalka:           
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                print(errorsteer)
+            mot.stop()
+
+    elif rampup == "n":
+        if (mensivetsi == "mensi"):
+            while motr.get_degrees_counted() < dalka:            
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                print(errorsteer)
+            mot.stop()
+
+        elif(mensivetsi == "vetsi"):
+            while motr.get_degrees_counted() > dalka:           
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                speedl = int(rychl + errorsteer)
+                speedr = int(rychl - errorsteer)
+                mot.start_tank_at_power(speedl, speedr)
+                print(errorsteer)
+            mot.stop()
+
+move_gyro(1300, 0, 80, "mensi", 0.8, "y", 20, 80, 100)
