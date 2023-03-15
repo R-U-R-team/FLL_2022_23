@@ -203,10 +203,10 @@ hub.light_matrix.off()
 hub.status_light.on("green")
 wait_for_seconds(0.5)
 
-move_gyro(1310, 2, 0, "mensi", 1, "y")
+move_gyro(1290, 3, 0, "mensi", 1, "y")
 rad.run_for_degrees(120, 100)
 mot.move_tank(2, "cm", 25, 25)
-jizda_po_care(200, 25, "l", "l", 0.3)
+#jizda_po_care(200, 25, "l", "l", 0.3)
 
 
 

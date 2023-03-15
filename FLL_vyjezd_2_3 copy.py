@@ -40,15 +40,18 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", ko
     if rampup == "y":
 
         if (mensivetsi == "mensi"):
+            timer.reset()
+            #tento loop projede jednou za 2,2222222 milisekund
             while motr.get_degrees_counted() < dalka:
-         
                 errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
                 speedl = int(rychl + errorsteer)
                 speedr = int(rychl - errorsteer)
                 mot.start_tank_at_power(speedl, speedr)
                 if rychl< kon_rych:
                     rychl = rychl + 1
-                print(errorsteer,rychl)
+                elif rychl == kon_rych:
+                    cas = timer.now()
+            print(cas)
             mot.stop()
 
         elif(mensivetsi == "vetsi"):
@@ -203,17 +206,17 @@ hub.light_matrix.off()
 hub.status_light.on("green")
 wait_for_seconds(0.5)
 
-move_gyro(1290, 3, 0, "mensi", 1, "y")
+move_gyro(1290, 2.5, 0, "mensi", 1, "y")
 rad.run_for_degrees(120, 100)
-mot.move_tank(2, "cm", 25, 25)
-mot.start_tank(17,14)
-#tady se to může posrat
-wait_until(cl.get_reflected_light, less_than_or_equal_to, cerna_zarovnani)
-mot.stop()
-jizda_po_care(200, 25, "l", "l", 0.3)
-
-
-
+mot.move_tank(3, "cm", 15, 25)
+#mot.move_tank(3, "cm", 25, 25)
+#mot.start_tank(17,14)
+#wait_until(cl.get_reflected_light, less_than_or_equal_to, cerna_zarovnani)
+#mot.stop()
+jizda_po_care(400, 25, "l", "l", 0.4)
+move_gyro(400, 0, 30)
+gyro_steer_r(90, 65, 0)
+#move_gyro(300, 0, 50)
 
 
 
