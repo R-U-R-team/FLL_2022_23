@@ -48,7 +48,7 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", ko
                 speedr = int(rychl - errorsteer)
                 mot.start_tank_at_power(speedl, speedr)
                 if rychl< kon_rych:
-                    rychl = rychl + 1
+                    rychl = rychl + 0.5
                 elif rychl == kon_rych:
                     cas = timer.now()
             print(cas)
@@ -206,21 +206,24 @@ hub.light_matrix.off()
 hub.status_light.on("green")
 wait_for_seconds(0.5)
 
-move_gyro(1290, 2.5, 0, "mensi", 1, "y")
+move_gyro(1290, 2, 0, "mensi", 2, "y")
 rad.run_for_degrees(120, 100)
-mot.move_tank(3, "cm", 15, 25)
-#mot.move_tank(3, "cm", 25, 25)
+#mot.move_tank(3, "cm", 15, 25)
+mot.move_tank(4, "cm", 25, 25)
 #mot.start_tank(17,14)
 #wait_until(cl.get_reflected_light, less_than_or_equal_to, cerna_zarovnani)
 #mot.stop()
-jizda_po_care(400, 25, "l", "l", 0.4)
-move_gyro(400, 0, 30)
-gyro_steer_r(90, 65, 0)
-#move_gyro(300, 0, 50)
-
-
-
-
+jizda_po_care(400, 30, "l", "l", 0.2)
+move_gyro(630, 0, 65, "mensi", 2)
+gyro_steer_r(40, 65, 0)
+move_gyro(170, 0, 65)
+vzv.run_for_degrees(250, 100)
+gyro_steer_r(4, 25, -25)
+wait_for_seconds(0.5)
+gyro_steer_l(-3, -25, 25)
+vzv.run_for_degrees(250, -100)
+gyro_steer_l(-45, -40, 20)
+move_gyro(800, 0, 90)
 
 raise SystemExit
 #koneeec
