@@ -2,7 +2,7 @@
 
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until
-from spike.operator import greater_than_or_equal_to
+from spike.operator import greater_than_or_equal_to, less_than_or_equal_to
 
 hub = PrimeHub()
 sekundy = 0
@@ -177,19 +177,22 @@ wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
 #mot.stop()
 mot.move_tank(5, "cm", 50, 50)
 wait_for_seconds(0.1)
-gyro_steer_l(-46, 0, 50)
+#gyro_steer_l(-20, 0, 50)
+#mot.start_tank_at_power(0, 50)
+#wait_until(cr.get_reflected_light, less_than_or_equal_to, 40)
+gyro_steer_l(-42, 0, 50)
 jizda_po_care(620, 50, "r", "r", 0.40)
 
-##vrací se se vším
-#rad.run_for_seconds(0.4, -100)
-#mot.move_tank(18, "cm", -40, -40)
+#vrací se se vším
+rad.run_for_seconds(0.4, -100)
+mot.move_tank(20, "cm", -40, -40)
+wait_for_seconds(0.1)
+gyro_steer_l(-35, -50, 0)
+wait_for_seconds(0.1)
+mot.move_tank(37, "cm", -50, -50)
 #wait_for_seconds(0.1)
-#gyro_steer_l(-35, -50, 0)
-#wait_for_seconds(0.1)
-#mot.move_tank(37, "cm", -50, -50)
-#wait_for_seconds(0.1)
-#gyro_steer_l(-15, -30, 0)
-#mot.move_tank(50, "cm", -100, -100)
+gyro_steer_l(-15, -30, 0)
+mot.move_tank(50, "cm", -100, -100)
 
 raise SystemExit
 #koneec
