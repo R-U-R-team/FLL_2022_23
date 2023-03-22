@@ -1,4 +1,4 @@
-# LEGO type:standard slot:12 autostart
+# LEGO type:standard slot:2 autostart
 
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until
@@ -85,7 +85,8 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", ko
 
 def gyro_steer_r(pozitivni_zatacka, levy, pravy):
     hub.motion_sensor.reset_yaw_angle()
-    while hub.motion_sensor.get_yaw_angle()<=pozitivni_zatacka:
+    timer.reset()
+    while hub.motion_sensor.get_yaw_angle()<=pozitivni_zatacka and timer.now()<3:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu

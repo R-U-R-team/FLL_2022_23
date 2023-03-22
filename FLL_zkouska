@@ -370,6 +370,8 @@ def rampup_sec(poc_rych, kon_rych, za_jak_dlouho):
             jeste_kon = kon_rych * posun
         mot.stop()
 
+
+#pozor na to, že jestli poc_rych bude 0 tak se nikdy nerozjede
 def rampup_degrees(poc_rych, kon_rych, degrees):
     rychlost = kon_rych / 2
     degrees = degrees / rychlost

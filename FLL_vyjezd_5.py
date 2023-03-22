@@ -185,21 +185,22 @@ wait_for_seconds(0.5)
 
 #jede vodníka
 hub.motion_sensor.reset_yaw_angle()
-move_gyro(780, 0, 50, "mensi", "n")
+move_gyro(770, 0, 50, "mensi", "y")
 wait_for_seconds(0.3)
 gyro_steer_l(-38, -35, 35, "n")
 wait_for_seconds(0.3)
 move_gyro(570, 0, 50)
-vzv.run_for_degrees(200, 60)
-vzv.run_for_degrees(140, 20)
-vzv.run_for_degrees(330, -100)
+vzv.run_for_degrees(200, 30)
+wait_for_seconds(0.5)
+vzv.run_for_seconds(0.4, 100)
+vzv.run_for_seconds(1, -100)
 
 #jede bílý kontejner
 move_gyro(80, 0, 65)
 gyro_steer_r(5, 50, 0)
 move_gyro(150, 0, 50)
-vzv.run_for_degrees(330, 100)
-gyro_steer_l(-9, -40, 40)
+vzv.run_for_seconds(0.5, 100)
+gyro_steer_l(-15, -40, 40)
 wait_for_seconds(0.1)
 move_gyro(460, 0, 65)
 mot.start_tank_at_power(-50, 0)
@@ -209,21 +210,21 @@ jizda_po_care_na_senzor("l", 35, "r", "r", 0.35)
 
 #ruka
 move_gyro(150, 0, 50)
-vzv.run_for_degrees(340, -100)
-move_gyro(-120, 0, -50, "vetsi")
+vzv.run_for_seconds(0.8, -100)
+mot.move_tank(0.4, "seconds", -50, -50)
 wait_for_seconds(0.3)
-vzv.run_for_degrees(340, 100)
+vzv.run_for_seconds(0.4, 100)
 move_gyro(-240, 0, -50, "vetsi")
-gyro_steer_r(30, 40, -40)
+gyro_steer_r(32, 30, -30)
 
 #jede zbytek
-vzv.run_for_degrees(330, -100)
+vzv.run_for_seconds(0.4, -100)
 move_gyro(480, 0, 60)
 rad.run_for_seconds(0.5, -50)
 wait_for_seconds(0.5)
 rad.run_for_seconds(0.5, 50)
 move_gyro(120, 0, 60)
-vzv.run_for_seconds(1, 100)
+vzv.run_for_seconds(1.5, 100)
 
 raise SystemExit
 #koneeeec
