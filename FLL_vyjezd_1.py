@@ -136,12 +136,17 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
+hub.speaker.set_volume(100)
+hub.speaker.start_beep(70)
 hub.status_light.on('red')
-hub.light_matrix.show_image('CLOCK1')
+hub.light_matrix.show_image('CLOCK9')
 hub.right_button.wait_until_pressed()
+hub.speaker.stop()
 hub.light_matrix.off()
 hub.status_light.on("green")
 wait_for_seconds(0.5)
+
+hub.motion_sensor.reset_yaw_angle()
 
 #jede televize
 move_gyro(700, 0, 60)
