@@ -149,7 +149,7 @@ wait_for_seconds(0.5)
 hub.motion_sensor.reset_yaw_angle()
 
 #jede televize
-move_gyro(700, 0, 60)
+move_gyro(690, 0, 60)
 wait_for_seconds(0.3)
 mot.move_tank(10, "cm", -40, -40)
 gyro_steer_l(-35, -35, 35)
@@ -172,13 +172,14 @@ wait_for_seconds(0.3)
 
 #jede trychtýř
 mot.move_tank(15, "cm", -40, -40)
-rad.run_for_seconds(1, -100)
+rad.run_for_seconds(1.3, -50)
 vzv.run_for_degrees(100, 100)
 gyro_steer_l(-90, -35, 35)
 #jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
-mot.move_tank(7, "cm", 40, 40)
+mot.move_tank(5.5, "cm", 40, 40)
+#jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
 gyro_steer_l(-86, -35, 35)
-vzv.run_for_degrees(90, -100)
+vzv.run_for_degrees(90, -80)
 mot.move_tank(0.5, "seconds", 40, 40)
 rad.run_for_seconds(0.5, 50)
 wait_for_seconds(0.5)

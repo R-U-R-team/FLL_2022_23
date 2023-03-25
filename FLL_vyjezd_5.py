@@ -188,11 +188,11 @@ wait_for_seconds(0.5)
 
 #jede vodníka
 hub.motion_sensor.reset_yaw_angle()
-move_gyro(780, 0, 50, "mensi", "y")
+move_gyro(760, 0, 50, "mensi", "y")
 wait_for_seconds(0.3)
 gyro_steer_l(-38, -35, 35, "n")
 wait_for_seconds(0.3)
-move_gyro(568, 0, 50)
+move_gyro(555, 0, 50)
 vzv.run_for_degrees(200, 30)
 wait_for_seconds(0.5)
 vzv.run_for_seconds(0.4, 100)
@@ -218,7 +218,7 @@ mot.move_tank(0.4, "seconds", -50, -50)
 wait_for_seconds(0.3)
 vzv.run_for_seconds(0.4, 100)
 move_gyro(-240, 0, -50, "vetsi")
-gyro_steer_r(31, 30, -30)
+gyro_steer_r(32.5, 30, -30)
 
 #jede zbytek
 vzv.run_for_seconds(0.4, -100)
@@ -226,7 +226,7 @@ move_gyro(480, 0, 60)
 rad.run_for_seconds(0.5, -50)
 wait_for_seconds(0.5)
 rad.run_for_seconds(0.5, 50)
-move_gyro(120, 0, 60)
+move_gyro(95, 0, 60)
 vzv.run_for_seconds(1.5, 100)
 
 raise SystemExit

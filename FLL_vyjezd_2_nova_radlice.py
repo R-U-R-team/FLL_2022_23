@@ -1,11 +1,15 @@
 # LEGO type:standard slot:2 autostart
 
+#imprt knihoven
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until
 from spike.operator import *
 from spike.control import Timer
 
+#zkrácení clasy
 hub = PrimeHub()
+
+#proměné
 sekundy = 0
 rychlost = 0
 cerna = 25
@@ -13,7 +17,7 @@ bila = 99
 cerna_zarovnani = cerna + 5
 stred = (cerna + bila) // 2
 
-
+#zkrácení clasy
 cl = ColorSensor("E")
 cr = ColorSensor("F")
 mot = MotorPair("A", "B")
@@ -22,13 +26,16 @@ motl = Motor("A")
 vzv = Motor("D")
 rad = Motor("C")
 timer = Timer()
+#na nic
 yaw = hub.motion_sensor.get_yaw_angle()
 resgyr = hub.motion_sensor.reset_yaw_angle()
 resmot = motr.set_degrees_counted(0)
 mot.set_default_speed(30)
-
+#na něco
 mot.set_motor_rotation(17.6, "cm")
 
+
+#funkce
 def move_sec(rychlostl, rychlostr, sekundy):
     mot.start_tank(rychlostl, rychlostr)
     wait_for_seconds(sekundy)
@@ -200,6 +207,8 @@ def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", 
         print(soucet)
     mot.stop()
 
+
+#program
 hub.speaker.set_volume(100)
 hub.speaker.start_beep(80)
 hub.status_light.on('red')
@@ -212,19 +221,24 @@ wait_for_seconds(0.5)
 
 hub.motion_sensor.reset_yaw_angle()
 
+#power kytka
 move_gyro(1290, 1.8, 0, "mensi", 2, "y")
 rad.run_for_degrees(120, 100)
 mot.move_tank(4, "cm", 25, 25)
 jizda_po_care(400, 30, "l", "l", 0.2)
-move_gyro(630, 0, 80, "mensi", 2)
+
+#jede vodník
+move_gyro(600, 0, 80, "mensi", 2)
 hub.motion_sensor.reset_yaw_angle()
-gyro_steer_r(38.5, 65, 0)
+gyro_steer_r(39.5, 65, 0)
 move_gyro(150, 0, 80)
 vzv.run_for_degrees(250, 100)
 gyro_steer_r(6, 40, -40)
 wait_for_seconds(0.5)
 gyro_steer_l(-0.8, -40, 40)
 vzv.run_for_degrees(250, -100)
+
+#jede do bazu
 gyro_steer_l(-45, -60, 30)
 move_gyro(800, 0, 95)
 
