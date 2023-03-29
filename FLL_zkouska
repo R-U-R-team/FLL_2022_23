@@ -445,4 +445,23 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", po
                 print(errorsteer)
             mot.stop()
 
-move_gyro(1300, 0, 80, "mensi", 0.8, "y", 20, 80, 100)
+pocitadlo = 1
+
+while True:
+    if hub.left_button.was_pressed():
+        pocitadlo == pocitadlo + 1
+        if pocitadlo == 5:
+            pocitadlo = 1
+
+    if pocitadlo == 1:
+        hub.light_matrix.show_image('CLOCK12')
+
+    if pocitadlo == 2:
+        hub.light_matrix.show_image('CLOCK3')
+
+    if pocitadlo == 3:
+        hub.light_matrix.show_image('CLOCK6')
+    
+    if pocitadlo == 4:
+        hub.light_matrix.show_image('CLOCK9')
+    hub.light_matrix.off()

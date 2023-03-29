@@ -1,3 +1,5 @@
+# LEGO type:standard slot:0 autostart
+
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
 from spike.operator import less_than, greater_than_or_equal_to, less_than_or_equal_to
@@ -171,8 +173,8 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
 
 #nadprogram
 while True:
-    if hub.right_button.was_pressed():
-        pocitadlo =+ 1
+    if hub.right_button.is_pressed():
+        pocitadlo == pocitadlo + 1
         if pocitadlo == 5:
             pocitadlo = 1
 
@@ -236,7 +238,7 @@ while True:
     #dvojka
     if pocitadlo == 2:
         hub.speaker.set_volume(100)
-        hub.speaker.start_beep(70)
+        hub.speaker.start_beep(75)
         hub.status_light.on('red')
         hub.light_matrix.show_image('CLOCK3')
 
@@ -271,7 +273,7 @@ while True:
 
     if pocitadlo == 3:
         hub.speaker.set_volume(100)
-        hub.speaker.start_beep(70)
+        hub.speaker.start_beep(80)
         hub.status_light.on('red')
         hub.light_matrix.show_image('CLOCK6')
 
@@ -337,7 +339,7 @@ while True:
 
     if pocitadlo == 4:
         hub.speaker.set_volume(100)
-        hub.speaker.start_beep(70)
+        hub.speaker.start_beep(85)
         hub.status_light.on('red')
         hub.light_matrix.show_image('CLOCK9')
 
