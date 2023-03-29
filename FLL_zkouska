@@ -452,16 +452,18 @@ while True:
         pocitadlo == pocitadlo + 1
         if pocitadlo == 5:
             pocitadlo = 1
-
+    print(1)
     if pocitadlo == 1:
         hub.light_matrix.show_image('CLOCK12')
-
+    print(2)
     if pocitadlo == 2:
         hub.light_matrix.show_image('CLOCK3')
-
+    print(3)
     if pocitadlo == 3:
         hub.light_matrix.show_image('CLOCK6')
-    
+    print(4)
     if pocitadlo == 4:
         hub.light_matrix.show_image('CLOCK9')
     hub.light_matrix.off()
+    print(5)
+    print("a", pocitadlo)

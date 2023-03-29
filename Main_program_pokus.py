@@ -14,13 +14,13 @@ cerna_zarovnani = cerna + 5
 stred = (cerna + bila) // 2
 pocitadlo = 1
 
-cl = ColorSensor("E")
-cr = ColorSensor("F")
-mot = MotorPair("A", "B")
-motr = Motor("B")
+#cl = ColorSensor("E")
+#cr = ColorSensor("F")
+#mot = MotorPair("A", "B")
+#motr = Motor("B")
 motl = Motor("A")
-vzv = Motor("D")
-rad = Motor("C")
+#vzv = Motor("D")
+#rad = Motor("C")
 timer = Timer()
 
 
@@ -173,9 +173,9 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
 
 #nadprogram
 while True:
-    if hub.right_button.is_pressed():
-        pocitadlo == pocitadlo + 1
-        if pocitadlo == 5:
+    if hub.right_button.was_pressed():
+        pocitadlo += 1
+        if pocitadlo >= 5:
             pocitadlo = 1
 
     #jednicka
