@@ -14,13 +14,13 @@ cerna_zarovnani = cerna + 5
 stred = (cerna + bila) // 2
 pocitadlo = 1
 
-#cl = ColorSensor("E")
-#cr = ColorSensor("F")
-#mot = MotorPair("A", "B")
-#motr = Motor("B")
+cl = ColorSensor("E")
+cr = ColorSensor("F")
+mot = MotorPair("A", "B")
+motr = Motor("B")
 motl = Motor("A")
-#vzv = Motor("D")
-#rad = Motor("C")
+vzv = Motor("D")
+rad = Motor("C")
 timer = Timer()
 
 
@@ -33,32 +33,33 @@ def move_sec(rychlostl, rychlostr, sekundy):
     mot.stop()
 #pokus se to odstranit
 
-def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", kon_rych = 90, reset_gyro = "y"):
+def move_gyro(dalka, smer, rychl = 0, mensivetsi = "mensi", kp = 0.6, kd = 0.15, rampup="n", kon_rych = 90, reset_gyro = "y"):
     motr.set_degrees_counted(0)
     
     if(reset_gyro=="y"):
         hub.motion_sensor.reset_yaw_angle()
     
-    if rampup == "y":
+    last_error = 0
 
+    if rampup == "y":
         if (mensivetsi == "mensi"):
-            timer.reset()
             #tento loop projede jednou za 2,2222222 milisekund
             while motr.get_degrees_counted() < dalka:
-                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                error = smer - hub.motion_sensor.get_yaw_angle()
+                integracni = (smer - hub.motion_sensor.get_yaw_angle()) * kp
+                derivacni = (error - last_error) * kd
+                errorsteer = integracni + derivacni
                 speedl = int(rychl + errorsteer)
                 speedr = int(rychl - errorsteer)
                 mot.start_tank_at_power(speedl, speedr)
                 if rychl< kon_rych:
-                    rychl = rychl + 0.5
-                elif rychl == kon_rych:
-                    cas = timer.now()
-            print(cas)
+                    rychl = rychl + 0.5 
+                last_error = error         
             mot.stop()
 
         elif(mensivetsi == "vetsi"):
             while motr.get_degrees_counted() > dalka:           
-                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*kp
                 speedl = int(rychl + errorsteer)
                 speedr = int(rychl - errorsteer)
                 mot.start_tank_at_power(speedl, speedr)
@@ -68,7 +69,7 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", ko
     elif rampup == "n":
         if (mensivetsi == "mensi"):
             while motr.get_degrees_counted() < dalka:            
-                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*kp
                 speedl = int(rychl + errorsteer)
                 speedr = int(rychl - errorsteer)
                 mot.start_tank_at_power(speedl, speedr)
@@ -77,28 +78,50 @@ def move_gyro(dalka, smer, rychl, mensivetsi = "mensi", Prop=0.6, rampup="n", ko
 
         elif(mensivetsi == "vetsi"):
             while motr.get_degrees_counted() > dalka:           
-                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*Prop
+                errorsteer = (smer - hub.motion_sensor.get_yaw_angle())*kp
                 speedl = int(rychl + errorsteer)
                 speedr = int(rychl - errorsteer)
                 mot.start_tank_at_power(speedl, speedr)
                 print(errorsteer)
             mot.stop()
 
-def gyro_steer_r(pozitivni_zatacka, levy, pravy, reset_gyro="y"):
-    if(reset_gyro=="y"):
-        hub.motion_sensor.reset_yaw_angle()
+
+def gyro_steer_r(pozitivni_zatacka, levy, pravy, moc_dlouho = 2):
+    hub.motion_sensor.reset_yaw_angle()
     timer.reset()
-    while hub.motion_sensor.get_yaw_angle()<=pozitivni_zatacka and timer.now()<3:
+    while hub.motion_sensor.get_yaw_angle() <= pozitivni_zatacka and timer.now()<moc_dlouho:
         mot.start_tank_at_power(levy, pravy)
     mot.stop()
+    if levy == 0:
+        while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
+            mot.start_tank_at_power(0, 30)
+    elif pravy == 0:
+        while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
+            mot.start_tank_at_power(-30, 0)
+    elif levy > 0 and pravy < 0:
+        while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
+            mot.start_tank_at_power(-25, 25)
+    mot.stop()
+    print(hub.motion_sensor.get_yaw_angle())
+
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu
-def gyro_steer_l(negativni_zatacka, levy, pravy, reset_gyro="y"):
-    if(reset_gyro=="y"):
-        hub.motion_sensor.reset_yaw_angle()
+
+def gyro_steer_l(negativni_zatacka, levy, pravy, moc_dlouho = 2):
+    hub.motion_sensor.reset_yaw_angle()
     timer.reset()
-    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka and timer.now()<3:
+    while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka and timer.now() < moc_dlouho:
         mot.start_tank_at_power(levy, pravy)
+    if levy == 0:
+        while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
+            mot.start_tank_at_power(0, -30)
+    elif pravy == 0:
+        while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
+            mot.start_tank_at_power(30, 0)
+    elif levy < 0 and pravy > 0:
+        while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
+            mot.start_tank_at_power(25, -25)
     mot.stop()
+    print(hub.motion_sensor.get_yaw_angle())
 
 def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
     motr.set_degrees_counted(0)
@@ -173,7 +196,7 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
 
 #nadprogram
 while True:
-    if hub.right_button.was_pressed():
+    if hub.left_button.was_pressed():
         pocitadlo += 1
         if pocitadlo >= 5:
             pocitadlo = 1
@@ -183,9 +206,9 @@ while True:
         hub.speaker.set_volume(100)
         hub.speaker.start_beep(70)
         hub.status_light.on('red')
-        hub.light_matrix.show_image('CLOCK12')
+        hub.light_matrix.write('1')
 
-    if pocitadlo == 1 and hub.left_button.was_pressed():
+    if pocitadlo == 1 and hub.right_button.was_pressed():
 
         hub.speaker.stop()
         hub.light_matrix.off()
@@ -194,55 +217,55 @@ while True:
         hub.motion_sensor.reset_yaw_angle()
 
         #jede televize
-        move_gyro(690, 0, 60)
+        move_gyro(690, 0, 0, "mensi", 2, 0.15, "y", 70)
         wait_for_seconds(0.3)
         mot.move_tank(10, "cm", -40, -40)
-        gyro_steer_l(-35, -35, 35)
+        gyro_steer_l(-40, -45, 45)
 
         #jede vrtule
         wait_for_seconds(0.3)
-        move_gyro(1050, 0, 60)
-        gyro_steer_r(75, 0, -70)
-        mot.move_tank(10, "cm", 50, 50)
-        move_sec(50, 50, 0.6)
-        wait_for_seconds(0.3)
-        mot.move_tank(5, "cm", -50, -50)
-        wait_for_seconds(0.3)
-        move_sec(50, 50, 0.5)
-        wait_for_seconds(0.3)
-        mot.move_tank(5, "cm", -50, -50)
-        wait_for_seconds(0.3)
-        move_sec(50, 50, 0.5)
-        wait_for_seconds(0.3)
-
-        #jede trychtýř
-        mot.move_tank(15, "cm", -40, -40)
-        rad.run_for_seconds(1.3, -50)
-        vzv.run_for_degrees(100, 100)
-        gyro_steer_l(-90, -35, 35)
-        #jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
-        mot.move_tank(5.5, "cm", 40, 40)
-        #jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
-        gyro_steer_l(-86, -35, 35)
-        vzv.run_for_degrees(90, -80)
-        mot.move_tank(0.5, "seconds", 40, 40)
-        rad.run_for_seconds(0.5, 50)
-        wait_for_seconds(0.5)
-        rad.run_for_seconds(0.5, -50)
-
-        #jede baze
-        mot.move_tank(5, "cm", -50, -50)
-        gyro_steer_l(-60, -90, 90)
-        move_sec(100, 100, 1.75)
-
+        move_gyro(1050, 0, 0, "mensi", 2, 0.15, "y", 80)
+        gyro_steer_r(80, 0, -70)
+        #mot.move_tank(10, "cm", 50, 50)
+        #move_sec(50, 50, 0.6)
+        #wait_for_seconds(0.3)
+        #mot.move_tank(5, "cm", -50, -50)
+        #wait_for_seconds(0.3)
+        #move_sec(50, 50, 0.5)
+        #wait_for_seconds(0.3)
+        #mot.move_tank(5, "cm", -50, -50)
+        #wait_for_seconds(0.3)
+        #move_sec(50, 50, 0.5)
+        #wait_for_seconds(0.3)
+#
+        ##jede trychtýř
+        #mot.move_tank(15, "cm", -40, -40)
+        #rad.run_for_seconds(1.3, -50)
+        #vzv.run_for_degrees(100, 100)
+        #gyro_steer_l(-90, -35, 35)
+        ##jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
+        #mot.move_tank(5.5, "cm", 40, 40)
+        ##jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
+        #gyro_steer_l(-86, -35, 35)
+        #vzv.run_for_degrees(90, -80)
+        #mot.move_tank(0.5, "seconds", 40, 40)
+        #rad.run_for_seconds(0.5, 50)
+        #wait_for_seconds(0.5)
+        #rad.run_for_seconds(0.5, -50)
+#
+        ##jede baze
+        #mot.move_tank(5, "cm", -50, -50)
+        #gyro_steer_l(-60, -90, 90)
+        #move_sec(100, 100, 1.75)
+#
     #dvojka
     if pocitadlo == 2:
         hub.speaker.set_volume(100)
         hub.speaker.start_beep(75)
         hub.status_light.on('red')
-        hub.light_matrix.show_image('CLOCK3')
+        hub.light_matrix.write('2')
 
-    if pocitadlo == 2 and hub.left_button.was_pressed():
+    if pocitadlo == 2 and hub.right_button.was_pressed():
 
         hub.speaker.stop()
         hub.light_matrix.off()
@@ -251,34 +274,34 @@ while True:
         hub.motion_sensor.reset_yaw_angle()
 
         #power kytka
-        move_gyro(1290, 1.8, 0, "mensi", 2, "y")
+        move_gyro(1290, 1.8, 0, "mensi", 2.5, 0.15, "y")
         rad.run_for_degrees(120, 100)
         mot.move_tank(4, "cm", 25, 25)
         jizda_po_care(400, 30, "l", "l", 0.2)
 
         #jede vodník
-        move_gyro(600, 0, 80, "mensi", 2)
+        move_gyro(600, 0, 0, "mensi", 2, 0.15, "y", 90)
         hub.motion_sensor.reset_yaw_angle()
-        gyro_steer_r(39.5, 65, 0)
-        move_gyro(150, 0, 80)
+        gyro_steer_r(39, 65, 0)
+        move_gyro(150, 0, 0, "mensi", 2, 0.15, "y", 90)
         vzv.run_for_degrees(250, 100)
         gyro_steer_r(6, 40, -40)
         wait_for_seconds(0.5)
-        gyro_steer_l(-0.8, -40, 40)
+        gyro_steer_l(-1, -40, 40)
         vzv.run_for_degrees(250, -100)
 
         #jede do bazu
-        gyro_steer_l(-45, -60, 30)
-        move_gyro(800, 0, 95)
+        gyro_steer_l(-45, -80, 80)
+        move_gyro(800, 0, 0, "mensi", 2, 0.15, "y")
 
     if pocitadlo == 3:
         hub.speaker.set_volume(100)
         hub.speaker.start_beep(80)
         hub.status_light.on('red')
-        hub.light_matrix.show_image('CLOCK6')
+        hub.light_matrix.write('3')
 
     #trojka
-    if pocitadlo == 3 and hub.left_button.was_pressed():
+    if pocitadlo == 3 and hub.right_button.was_pressed():
 
         hub.speaker.stop()
         hub.light_matrix.off()
@@ -341,10 +364,10 @@ while True:
         hub.speaker.set_volume(100)
         hub.speaker.start_beep(85)
         hub.status_light.on('red')
-        hub.light_matrix.show_image('CLOCK9')
+        hub.light_matrix.write('4')
 
     #ctverka
-    if pocitadlo == 4 and hub.left_button.was_pressed():
+    if pocitadlo == 4 and hub.right_button.was_pressed():
 
         hub.speaker.stop()
         hub.light_matrix.off()
