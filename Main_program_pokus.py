@@ -86,41 +86,46 @@ def move_gyro(dalka, smer, rychl = 0, mensivetsi = "mensi", kp = 0.6, kd = 0.15,
             mot.stop()
 
 
-def gyro_steer_r(pozitivni_zatacka, levy, pravy, moc_dlouho = 2):
+def gyro_steer_r(pozitivni_zatacka, levy, pravy, dorovnani = "y", mot_stop = "y", moc_dlouho = 2):
     hub.motion_sensor.reset_yaw_angle()
     timer.reset()
     while hub.motion_sensor.get_yaw_angle() <= pozitivni_zatacka and timer.now()<moc_dlouho:
         mot.start_tank_at_power(levy, pravy)
-    mot.stop()
-    if levy == 0:
-        while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
-            mot.start_tank_at_power(0, 30)
-    elif pravy == 0:
-        while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
-            mot.start_tank_at_power(-30, 0)
-    elif levy > 0 and pravy < 0:
-        while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
-            mot.start_tank_at_power(-25, 25)
-    mot.stop()
+    if mot_stop == "y":
+        mot.stop()
+    if dorovnani == "y":
+        if levy == 0:
+            while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
+                mot.start_tank_at_power(0, 30)
+        elif pravy == 0:
+            while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
+                mot.start_tank_at_power(-30, 0)
+        elif levy > 0 and pravy < 0:
+            while hub.motion_sensor.get_yaw_angle() >= pozitivni_zatacka + 1 and timer.now()<moc_dlouho:
+                mot.start_tank_at_power(-25, 25)
+        mot.stop()    
     print(hub.motion_sensor.get_yaw_angle())
 
 #ta věc se otáčí jen do 179 stupnu a do -179 stupnu neexistuje 180 stupnu
 
-def gyro_steer_l(negativni_zatacka, levy, pravy, moc_dlouho = 2):
+def gyro_steer_l(negativni_zatacka, levy, pravy, dorovnani = "y", mot_stop = "y", moc_dlouho = 2):
     hub.motion_sensor.reset_yaw_angle()
     timer.reset()
     while hub.motion_sensor.get_yaw_angle()>=negativni_zatacka and timer.now() < moc_dlouho:
         mot.start_tank_at_power(levy, pravy)
-    if levy == 0:
-        while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
-            mot.start_tank_at_power(0, -30)
-    elif pravy == 0:
-        while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
-            mot.start_tank_at_power(30, 0)
-    elif levy < 0 and pravy > 0:
-        while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
-            mot.start_tank_at_power(25, -25)
-    mot.stop()
+    if mot_stop == "y":
+        mot.stop()
+    if dorovnani == "y":
+        if levy == 0:
+            while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
+                mot.start_tank_at_power(0, -30)
+        elif pravy == 0:
+            while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
+                mot.start_tank_at_power(30, 0)
+        elif levy < 0 and pravy > 0:
+            while hub.motion_sensor.get_yaw_angle() <= negativni_zatacka - 1 and timer.now() < moc_dlouho:
+                mot.start_tank_at_power(25, -25)
+        mot.stop() 
     print(hub.motion_sensor.get_yaw_angle())
 
 def jizda_po_care(jak_daleko, jak_rychle = 30, jaky_senzor = "r", strana = "r", kp = 0.075, ki = 0.001, kd = 0.1):
@@ -226,38 +231,39 @@ while True:
         wait_for_seconds(0.3)
         move_gyro(1050, 0, 0, "mensi", 2, 0.15, "y", 80)
         gyro_steer_r(80, 0, -70)
-        #mot.move_tank(10, "cm", 50, 50)
-        #move_sec(50, 50, 0.6)
-        #wait_for_seconds(0.3)
-        #mot.move_tank(5, "cm", -50, -50)
-        #wait_for_seconds(0.3)
-        #move_sec(50, 50, 0.5)
-        #wait_for_seconds(0.3)
-        #mot.move_tank(5, "cm", -50, -50)
-        #wait_for_seconds(0.3)
-        #move_sec(50, 50, 0.5)
-        #wait_for_seconds(0.3)
-#
-        ##jede trychtýř
-        #mot.move_tank(15, "cm", -40, -40)
-        #rad.run_for_seconds(1.3, -50)
-        #vzv.run_for_degrees(100, 100)
-        #gyro_steer_l(-90, -35, 35)
-        ##jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
-        #mot.move_tank(5.5, "cm", 40, 40)
-        ##jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
-        #gyro_steer_l(-86, -35, 35)
-        #vzv.run_for_degrees(90, -80)
-        #mot.move_tank(0.5, "seconds", 40, 40)
-        #rad.run_for_seconds(0.5, 50)
-        #wait_for_seconds(0.5)
-        #rad.run_for_seconds(0.5, -50)
-#
-        ##jede baze
-        #mot.move_tank(5, "cm", -50, -50)
-        #gyro_steer_l(-60, -90, 90)
-        #move_sec(100, 100, 1.75)
-#
+        mot.move_tank(10, "cm", 50, 50)
+        move_sec(50, 50, 0.6)
+        wait_for_seconds(0.3)
+        mot.move_tank(5, "cm", -50, -50)
+        wait_for_seconds(0.3)
+        move_sec(50, 50, 0.5)
+        wait_for_seconds(0.3)
+        mot.move_tank(5, "cm", -50, -50)
+        wait_for_seconds(0.3)
+        move_sec(50, 50, 0.5)
+        wait_for_seconds(0.3)
+
+        #jede trychtýř
+        mot.move_tank(15, "cm", -40, -40)
+        rad.run_for_seconds(1.3, -50)
+        vzv.run_for_degrees(100, 100)
+        gyro_steer_l(-90, -35, 35)
+        #jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
+        mot.move_tank(5.5, "cm", 40, 40)
+        #jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
+        gyro_steer_l(-92, -35, 35)
+        vzv.run_for_degrees(90, -80)
+        mot.move_tank(0.5, "seconds", 40, 40)
+        rad.run_for_seconds(0.5, 50)
+        wait_for_seconds(0.5)
+        rad.run_for_seconds(0.5, -50)
+
+        #jede baze
+        mot.move_tank(5, "cm", -50, -50)
+        gyro_steer_l(-60, -90, 90, "n")
+        move_sec(100, 100, 1.75)
+        pocitadlo +=1
+
     #dvojka
     if pocitadlo == 2:
         hub.speaker.set_volume(100)
@@ -282,18 +288,19 @@ while True:
         #jede vodník
         move_gyro(600, 0, 0, "mensi", 2, 0.15, "y", 90)
         hub.motion_sensor.reset_yaw_angle()
-        gyro_steer_r(39, 65, 0)
-        move_gyro(150, 0, 0, "mensi", 2, 0.15, "y", 90)
         vzv.run_for_degrees(250, 100)
-        gyro_steer_r(6, 40, -40)
+        gyro_steer_r(50, 65, 0)
+        move_gyro(150, 0, 0, "mensi", 2, 0.15, "y", 90)
+        gyro_steer_r(8, 40, -40, "n")
         wait_for_seconds(0.5)
-        gyro_steer_l(-1, -40, 40)
+        gyro_steer_l(-1, -40, 40, "n")
         vzv.run_for_degrees(250, -100)
 
         #jede do bazu
-        gyro_steer_l(-45, -80, 80)
-        move_gyro(800, 0, 0, "mensi", 2, 0.15, "y")
-
+        gyro_steer_l(-40, -80, 80, "n")
+        move_gyro(800, 0, 90, "mensi", 2, 0.15, "n")
+        pocitadlo +=1
+    
     if pocitadlo == 3:
         hub.speaker.set_volume(100)
         hub.speaker.start_beep(80)
@@ -359,6 +366,7 @@ while True:
         wait_for_seconds(0.1)
         gyro_steer_l(-15, -30, 0)
         mot.move_tank(50, "cm", -100, -100)
+        pocitadlo +=1
 
     if pocitadlo == 4:
         hub.speaker.set_volume(100)
