@@ -318,18 +318,19 @@ while True:
 
         #jede_ropa
         mot.move_tank(10, "cm", 50, 50)
+        vzv.run_for_degrees(-280, 100)
         jizda_po_care(1150, 50, "l", "l", 0.36)
         wait_for_seconds(0.3)
         mot.move_tank(5, "cm", -30, -30)
         vzv.run_for_degrees(280, 100)
-        vzv.run_for_degrees(-270, 100)
+        vzv.run_for_degrees(-280, 100)
         for i in range(2):
             vzv.run_for_degrees(280, 100)
             vzv.run_for_degrees(-280, 100)
 
         #jede RUR
-        mot.move_tank(2.8, "cm", 40, 40)
-        vzv.run_for_degrees(300, 100)
+        mot.move_tank(4, "cm", 40, 40)
+        vzv.run_for_degrees(280, 100)
         move_sec(30, 30, 1.2)
         mot.move_tank(5, "cm", -30, -30)
         vzv.run_for_degrees(-300, 100)
@@ -347,26 +348,26 @@ while True:
         wait_for_seconds(0.1)
         mot.start_tank_at_power(50, 50)
         wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
-        #mot.stop()
         mot.move_tank(5, "cm", 50, 50)
         wait_for_seconds(0.1)
-        #gyro_steer_l(-20, 0, 50)
-        #mot.start_tank_at_power(0, 50)
-        #wait_until(cr.get_reflected_light, less_than_or_equal_to, 40)
         gyro_steer_l(-40, 0, 50)
         jizda_po_care(620, 50, "r", "r", 0.40)
 
         #vrací se se vším
         rad.run_for_seconds(0.4, -100)
-        mot.move_tank(21.5, "cm", -40, -40)
+        mot.move_tank(22, "cm", -40, -40)
         wait_for_seconds(0.1)
-        gyro_steer_l(-35, -50, 0)
+        gyro_steer_l(-37, -50, 0)
         wait_for_seconds(0.1)
-        mot.move_tank(37, "cm", -50, -50)
+        mot.move_tank(30, "cm", -50, -50)
         wait_for_seconds(0.1)
-        gyro_steer_l(-15, -30, 0)
-        mot.move_tank(50, "cm", -100, -100)
-        pocitadlo +=1
+        gyro_steer_l(-20, -40, 0)
+        mot.move_tank(17, "cm", -50, -50)
+        gyro_steer_l(-20, -50, 50)
+        mot.move_tank(20, "cm", -50, -50)
+        rad.run_for_seconds(0.5, 100)
+        mot.move_tank(30, "cm", -100, -100)
+        pocitadlo += 1
 
     if pocitadlo == 4:
         hub.speaker.set_volume(100)
