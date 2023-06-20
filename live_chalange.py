@@ -1,4 +1,4 @@
-# LEGO type:standard slot:0 autostart
+# LEGO type:standard slot:5 autostart
 
 from spike import PrimeHub, ColorSensor, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
@@ -203,7 +203,7 @@ def jizda_po_care_na_senzor(zastavovaci_senzor = "l", jak_rychle = 30, jaky_senz
 while True:
     if hub.left_button.was_pressed():
         pocitadlo += 1
-        if pocitadlo >= 5:
+        if pocitadlo >= 3:
             pocitadlo = 1
 
     #jednicka
@@ -221,57 +221,38 @@ while True:
 
         hub.motion_sensor.reset_yaw_angle()
 
-        #jede televize
-        move_gyro(550, 0, 0, "mensi", 2, 0.15, "y", 70)
-        mot.move_tank(0.6, "seconds", 50, 50)
-        wait_for_seconds(0.3)
-        mot.move_tank(10, "cm", -40, -40)
-        gyro_steer_l(-40, -45, 45)
+        #mot.move_tank(10, "cm", 50, 50)
+        #jizda_po_care(1150, 50, "l", "l", 0.36)
+        #gyro_steer_r(34, 30, -30)
+        #mot.move_tank(20, "cm", 35, 35)
+        #vzv.run_for_seconds(1, -100)
+        #mot.move_tank(120, "cm", -90, -90)
 
-        #jede vrtule
+
+        move_gyro(1650, 0.1, 0, "mensi", 4, 0.2, "y")
+        vzv.run_for_seconds(1, -100)
+        mot.move_tank(120, "cm", -90, -90)
+        #mot.move_tank(1, "seconds", 50, 50)
         #wait_for_seconds(0.3)
-        move_gyro(1050, 0, 0, "mensi", 2, 0.15, "y", 80)
-        gyro_steer_r(80, 0, -70)
-        mot.move_tank(10, "cm", 50, 50)
-        move_sec(50, 50, 0.6)
-        wait_for_seconds(0.3)
-        mot.move_tank(5, "cm", -50, -50)
-        wait_for_seconds(0.3)
-        move_sec(50, 50, 0.5)
-        wait_for_seconds(0.3)
-        mot.move_tank(5, "cm", -50, -50)
-        wait_for_seconds(0.3)
-        move_sec(50, 50, 0.5)
-        wait_for_seconds(0.3)
+        #mot.move_tank(120, "degrees", -50, -50)
+        #hub.motion_sensor.reset_yaw_angle()
+        #gyro_steer_r(45, 60, 0)
+        #mot.move_tank(2, "cm", 40, 40)
+        #vzv.run_for_seconds(0.5, 100)
+        #gyro_steer_r(44, 60, 40)
+        #move_gyro(1600, 0.1, 0, "mensi", 4, 0.2, "y")
+        #vzv.run_for_seconds(0.5, -100)
+        #move_gyro(-2000, 0.1, -90, "vetsi", 4, 0.2)
+        #gyro_steer_r(95, 40, -40)
+        #move_gyro(1600, 0.1, 95, "mensi", 4, 0.2)
 
-        #jede trychtýř
-        mot.move_tank(15, "cm", -40, -40)
-        rad.run_for_seconds(0.6, -80)
-        rad.run_for_seconds(0.6, -40)
-        vzv.run_for_degrees(100, 100)
-        gyro_steer_l(-90, -35, 35)
-        #jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
-        mot.move_tank(5.5, "cm", 40, 40)
-        #jedna z věcí pro úpravu na levo nebo na pravo od trychtýře -, +
-        gyro_steer_l(-95, -35, 35)
-        vzv.run_for_degrees(90, -80)
-        mot.move_tank(0.5, "seconds", 40, 40)
-        rad.run_for_seconds(0.5, 50)
-        wait_for_seconds(0.5)
-        rad.run_for_seconds(0.5, -50)
-
-        #jede baze
-        mot.move_tank(5, "cm", -50, -50)
-        gyro_steer_l(-60, -90, 90, "n")
-        move_sec(100, 100, 1.75)
-        pocitadlo +=1
-
-    #dvojka
+        pocitadlo = pocitadlo + 1
     if pocitadlo == 2:
         hub.speaker.set_volume(100)
-        hub.speaker.start_beep(75)
+        hub.speaker.start_beep(80)
         hub.status_light.on('red')
         hub.light_matrix.write('2')
+
 
     if pocitadlo == 2 and hub.right_button.was_pressed():
 
@@ -281,172 +262,5 @@ while True:
 
         hub.motion_sensor.reset_yaw_angle()
 
-        #power kytka
-        move_gyro(1290, 1, 0, "mensi", 2.5, 0.15, "y")
-        rad.run_for_degrees(120, 100)
-        mot.move_tank(4, "cm", 25, 25)
-        jizda_po_care(400, 30, "l", "l", 0.2)
-
-        #jede vodník
-        move_gyro(600, 0, 0, "mensi", 2, 0.15, "y", 90)
-        hub.motion_sensor.reset_yaw_angle()
-        vzv.run_for_degrees(250, 100)
-        gyro_steer_r(50, 65, 0)
-        move_gyro(150, 0, 0, "mensi", 2, 0.15, "y", 90)
-        gyro_steer_r(8, 40, -40, "n")
-        wait_for_seconds(0.5)
-        gyro_steer_l(-1, -40, 40, "n")
-        vzv.run_for_degrees(250, -100)
-
-        #jede do bazu
-        gyro_steer_l(-40, -80, 80, "n")
-        move_gyro(800, 0, 90, "mensi", 2, 0.15, "n")
-        pocitadlo +=1
-    
-    if pocitadlo == 3:
-        hub.speaker.set_volume(100)
-        hub.speaker.start_beep(80)
-        hub.status_light.on('red')
-        hub.light_matrix.write('3')
-
-    #trojka
-    if pocitadlo == 3 and hub.right_button.was_pressed():
-
-        hub.speaker.stop()
-        hub.light_matrix.off()
-        hub.status_light.on("green")
-
-        hub.motion_sensor.reset_yaw_angle()
-
-        #jede_ropa
-        mot.move_tank(10, "cm", 50, 50)
-        jizda_po_care(1150, 50, "l", "l", 0.36)
-        wait_for_seconds(0.3)
-        mot.move_tank(5, "cm", -30, -30)
-        vzv.run_for_degrees(280, 100)
-        vzv.run_for_degrees(-270, 100)
-        for i in range(2):
-            vzv.run_for_degrees(280, 100)
-            vzv.run_for_degrees(-280, 100)
-
-        #jede RUR
-        mot.move_tank(3.5, "cm", 40, 40)
-        vzv.run_for_degrees(280, 100)
-        move_sec(30, 30, 1.2)
-        mot.move_tank(5.5, "cm", -30, -30)
-        vzv.run_for_degrees(-290, 100)
-        mot.move_tank(10, "cm", -40, -40)
-        gyro_steer_r(34, 30, -30)
-        wait_for_seconds(0.3)
-
-        #jede mochyta
-        mot.move_tank(23, "cm", 35, 35)
-        gyro_steer_r(60, 35, 0)
-        wait_for_seconds(0.1)
-        mot.move_tank(10, "cm", -40, -40)
-        wait_for_seconds(0.1)
-        gyro_steer_r(33, 40, -40)
-        wait_for_seconds(0.1)
-        mot.start_tank_at_power(50, 50)
-        wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
-        mot.move_tank(5, "cm", 50, 50)
-        wait_for_seconds(0.1)
-        gyro_steer_l(-35, 0, 50)
-        jizda_po_care(620, 50, "r", "r", 0.40)
-
-        #vrací se se vším
-        rad.run_for_seconds(0.4, -100)
-        mot.move_tank(21.5, "cm", -40, -40)
-        wait_for_seconds(0.1)
-        gyro_steer_l(-40, -50, 0)
-        wait_for_seconds(0.1)
-        mot.move_tank(35, "cm", -50, -50)
-        wait_for_seconds(0.1)
-        gyro_steer_l(-25, -30, 0)
-        mot.move_tank(70, "cm", -100, -100)
-        
-        pocitadlo += 1
-
-    if pocitadlo == 4:
-        hub.speaker.set_volume(100)
-        hub.speaker.start_beep(85)
-        hub.status_light.on('red')
-        hub.light_matrix.write('4')
-
-    #ctverka
-    if pocitadlo == 4 and hub.right_button.was_pressed():
-
-        hub.speaker.stop()
-        hub.light_matrix.off()
-        hub.status_light.on("green")
-
-        hub.motion_sensor.reset_yaw_angle()
-
-        #jede vodníka
-        move_gyro(785, 0, 50, "mensi", 2)
-        wait_for_seconds(0.3)
-        gyro_steer_l(-43, -35, 35, "y")
-        wait_for_seconds(0.3)
-        move_gyro(570, 0, 50, "mensi", 2)
-        vzv.run_for_degrees(200, 30)
-        wait_for_seconds(0.5)
-        vzv.run_for_seconds(0.4, 100)
-        wait_for_seconds(0.3)
-        vzv.run_for_seconds(1, -100)
-
-        #jede bílý kontejner
-        move_gyro(80, 0, 40)
-        gyro_steer_r(13, 50, 0)
-        move_gyro(150, 0, 40)
         vzv.run_for_seconds(0.5, 100)
-        gyro_steer_l(-20, -40, 40)
-        wait_for_seconds(0.1)
-        move_gyro(480, 0, 0, "mensi", 2, 0.15, "y", 80)
-        mot.start_tank_at_power(-50, 0)
-        wait_until(cr.get_reflected_light, less_than, cerna_zarovnani)
-        mot.stop()
-        jizda_po_care_na_senzor("l", 35, "r", "r", 0.35)
-        mot.start_tank_at_power(0, 30)
-        wait_until(cr.get_reflected_light, greater_than_or_equal_to, 90)
-        mot.stop()
-        mot.start_tank_at_power(30, 0)
-        wait_until(cl.get_reflected_light, greater_than_or_equal_to, 90)
-        mot.stop()
-        mot.start_tank_at_power(0, -30)
-        wait_until(cr.get_reflected_light, less_than_or_equal_to, 40)
-        mot.stop()
-        mot.start_tank_at_power(-30, 0)
-        wait_until(cl.get_reflected_light, less_than_or_equal_to, 40)
-        mot.stop()
 
-        #ruka
-        move_gyro(100, 0, 50)
-        vzv.run_for_seconds(0.8, -100)
-        mot.move_tank(100, "degrees", -50, -50)
-        wait_for_seconds(0.5)
-        vzv.run_for_seconds(0.4, 100)
-        mot.move_tank(140, "degrees", -50, -50)
-        gyro_steer_r(40, 35, -35)
-
-        #jede zbytek
-        vzv.run_for_seconds(0.4, -100)
-        move_gyro(400, 0, 0, "mensi", 2, 0.15, "y", 80)
-        rad.run_for_seconds(0.5, -50)
-        wait_for_seconds(0.5)
-        rad.run_for_seconds(0.5, 100)
-        rad.start(10)
-        move_gyro(70, 0, 60)
-        vzv.run_for_seconds(1.8, 100)
-        mot.start_tank_at_power(100, 0)
-        wait_for_seconds(0.2)
-        mot.stop()
-        vzv.run_for_seconds(1, -100)
-        #gyro_steer_l(-145, -80, 0)
-        #mot.move_tank(30, "cm", -60, -60)
-        #gyro_steer_l(-120, -80, 0)
-        #gyro_steer_r(60, 40, -40)
-        #mot.move_tank(15, "cm", 65, 65)
-        rad.stop()
-
-        raise SystemExit()
-        
